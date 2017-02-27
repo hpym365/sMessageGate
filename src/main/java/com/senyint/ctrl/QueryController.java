@@ -1,6 +1,8 @@
 package com.senyint.ctrl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,13 +22,14 @@ public class QueryController {
 	@Autowired
 	ServiceFactory servFactory;
 
-	@RequestMapping("")
-	public String init() {
-		String method = "qrsqd";// 流里获取到的传入执行哪个service
+	@RequestMapping("{method}")
+	public String init(@PathVariable("method") String method) {
+//		String method = "qrsqd";// 流里获取到的传入执行哪个service
+		//测试 地址http://localhost:8080/query/qxsqd or qrsqd 见配置application.properties
 		serv = servFactory.getHandler(method);
-
+		serv.init();
 		System.out.println(serv);
-		return "init";
+		return "execute finished";
 	}
 
 	// @Autowired
