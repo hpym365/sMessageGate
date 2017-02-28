@@ -1,5 +1,7 @@
 package com.senyint.serv.impl;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +14,8 @@ import com.senyint.serv.Serv;
 @Component("cancel")
 public class CancelServ extends BaseServ implements Serv {
 
-	public void init(String methodName) {
+	public void init(Map<String,Object> map) {
 		System.out.println("ConfirmServ start...execute handlers..");
-		this.executeHandlerList(methodName);
+		this.executeHandlerList(map);
 	}
 }

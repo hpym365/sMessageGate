@@ -1,13 +1,9 @@
 package com.senyint.serv.impl;
 
-import java.util.List;
+import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.senyint.handler.Handler;
-import com.senyint.handler.HandlerFactory;
 import com.senyint.serv.Serv;
 
 /**
@@ -17,8 +13,8 @@ import com.senyint.serv.Serv;
 @Component("confirm")
 public class ConfirmServ extends BaseServ implements Serv  {
 
-	public void init(String methodName) {
+	public void init(Map<String,Object> map) {
 		System.out.println("ConfirmServ start...execute handlers..");
-		this.executeHandlerList(methodName);
+		this.executeHandlerList(map);
 	}
 }

@@ -1,5 +1,7 @@
 package com.senyint.serv;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
@@ -20,9 +22,9 @@ public class ServiceFactory {
 
 	Serv serv;
 
-	public Serv getHandler(String servMethodName) {
+	public Serv getServ(Map<String,Object> map) {
 
-		String servName = env.getProperty(servMethodName + ".serv");
+		String servName = env.getProperty(map.get("commondName") + ".serv");
 
 		try {
 			serv = (Serv) app.getBean(servName);

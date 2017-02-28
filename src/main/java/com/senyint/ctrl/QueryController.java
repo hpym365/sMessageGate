@@ -1,8 +1,10 @@
 package com.senyint.ctrl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,14 +25,15 @@ public class QueryController {
 	ServiceFactory servFactory;
 
 	@RequestMapping("{method}")
-	public String init(@PathVariable("method") String method) {
+	public Map<String, Object> init(@PathVariable("method") String method) {
 //		String method = "qrsqd";// 流里获取到的传入执行哪个service
 		//测试 地址http://localhost:8080/query/qxsqd or qrsqd 见配置application.properties
-		serv = servFactory.getHandler(method);
-
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("commondName",method);
+		serv = servFactory.getServ(map);
 		System.out.println(serv);
-		serv.init(method);
-		return "execute finished";
+		serv.init(map);
+		return map;
 	}
 
 	// @Autowired

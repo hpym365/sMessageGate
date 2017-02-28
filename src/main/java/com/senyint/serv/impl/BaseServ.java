@@ -1,6 +1,7 @@
 package com.senyint.serv.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,8 +13,8 @@ public class BaseServ {
 	@Autowired
 	HandlerFactory handlerFactory;
 
-	public void executeHandlerList(String methodName) {
-		List<Handler> handlerList = handlerFactory.getHandler(methodName);
-		handlerList.forEach(iteam -> iteam.execute());
+	public void executeHandlerList(Map<String,Object> map) {
+		List<Handler> handlerList = handlerFactory.getHandler((String) map.get("commondName"));
+		handlerList.forEach(iteam -> iteam.execute(map));
 	}
 }
