@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.senyint.serv.BaseServ;
+import com.senyint.serv.Serv;
 import com.senyint.serv.ServiceFactory;
 
 /**
@@ -17,7 +17,7 @@ import com.senyint.serv.ServiceFactory;
 @RequestMapping("/query")
 public class QueryController {
 
-	BaseServ serv;
+	Serv serv;
 
 	@Autowired
 	ServiceFactory servFactory;
@@ -27,8 +27,9 @@ public class QueryController {
 //		String method = "qrsqd";// 流里获取到的传入执行哪个service
 		//测试 地址http://localhost:8080/query/qxsqd or qrsqd 见配置application.properties
 		serv = servFactory.getHandler(method);
-		serv.init();
+
 		System.out.println(serv);
+		serv.init(method);
 		return "execute finished";
 	}
 

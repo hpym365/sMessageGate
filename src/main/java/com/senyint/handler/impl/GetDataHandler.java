@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.senyint.handler.Handler;
 
-@Component
+@Component("GETDATA")
 public class GetDataHandler implements Handler {
 
 	public void execute() {

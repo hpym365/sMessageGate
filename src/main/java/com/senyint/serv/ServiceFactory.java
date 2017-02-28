@@ -18,14 +18,14 @@ public class ServiceFactory {
 	@Autowired
 	ApplicationContext app;
 
-	BaseServ serv;
+	Serv serv;
 
-	public BaseServ getHandler(String servMethodName) {
+	public Serv getHandler(String servMethodName) {
 
 		String servName = env.getProperty(servMethodName + ".serv");
 
 		try {
-			serv = (BaseServ) app.getBean(servName);
+			serv = (Serv) app.getBean(servName);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException("找不到serv:" + servName);
