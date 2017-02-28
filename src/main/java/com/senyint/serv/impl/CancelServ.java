@@ -3,6 +3,7 @@ package com.senyint.serv.impl;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.senyint.serv.Serv;

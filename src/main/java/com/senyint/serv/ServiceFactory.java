@@ -1,15 +1,19 @@
 package com.senyint.serv;
 
 import java.util.Map;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import com.senyint.util.YamlUtil;
+
 /**
  * @author hpym365
- * @version 创建时间：2017年2月28日 上午1:24:10 类说明
+ * @version 创建时间：2017年2月28日 上午1:24:1 类说明
  */
 @Component
 public class ServiceFactory {
@@ -23,7 +27,7 @@ public class ServiceFactory {
 	Serv serv;
 
 	public Serv getServ(Map<String,Object> map) {
-
+		
 		String servName = env.getProperty(map.get("commondName") + ".serv");
 
 		try {

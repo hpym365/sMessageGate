@@ -14,7 +14,14 @@ public class BaseServ {
 	HandlerFactory handlerFactory;
 
 	public void executeHandlerList(Map<String,Object> map) {
-		List<Handler> handlerList = handlerFactory.getHandler((String) map.get("commondName"));
-		handlerList.forEach(iteam -> iteam.execute(map));
+		List<Map<String, Object>> handlerList = handlerFactory.getHandler((String) map.get("commondName"));
+		handlerList.forEach(iteamMap -> {
+			Handler handler = (Handler) iteamMap.get("handler");
+//			String config = (String) iteamMap.get("config");
+//			map.put("config", config);
+//			map.put("config", config);
+			map.putAll(iteamMap);
+			handler.execute(map);
+		});
 	}
 }

@@ -1,0 +1,7 @@
+my:
+  port: 9999
+  c: 
+    - a: 123
+  qq:
+    - a: kk
+  icq: abc
