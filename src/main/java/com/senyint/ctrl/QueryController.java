@@ -37,9 +37,9 @@ public class QueryController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("commondName",method);
 		serv = servFactory.getServ(map);
-		map.put("serv",serv.toString());
-		map.put("servFactory",servFactory.toString());
-		System.out.println(this);
+//		map.put("serv",serv.toString());
+//		map.put("servFactory",servFactory.toString());
+//		System.out.println(this);
 		serv.init(map);
 
 		return map;
