@@ -19,10 +19,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- <dependency> <groupId>com.hp.gateutil</groupId> <artifactId>UtilsTest</artifactId> 
+			<version>0.0.1-SNAPSHOT</version> </dependency> -->
+		<!-- groovy -->
 		<dependency>
-			<groupId>com.hp.gateutil</groupId>
-			<artifactId>UtilsTest</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>2.4.7</version>
 		</dependency>
 
 		<!-- Spring Boot web依赖 -->
