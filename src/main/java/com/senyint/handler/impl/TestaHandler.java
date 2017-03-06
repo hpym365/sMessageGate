@@ -12,9 +12,9 @@ import com.senyint.entity.Config;
 import com.senyint.handler.Handler;
 import com.senyint.handler.HandlerFactory;
 
-@Component("GETDATA")
-public class GetDataHandler implements Handler {
-	
+@Component("TESTA")
+public class TestaHandler implements Handler {
+
 	@Autowired
 	HandlerFactory handlerFactory;
 	
@@ -27,14 +27,15 @@ public class GetDataHandler implements Handler {
 			cfg.getHandler().execute(map);
 		}
 	}
-
+	
+	
 	public void execute(Map<String,Object> map) {
 		Config config = (Config) map.get("config");
 		if(config.getDepList()!=null){
 			this.executeDep(config.getDepList());
 		}
 		
-		System.out.println("GetDataHandler execute");
-		map.put("GetDataHandler是第"+map.get("index")+"次运行的", "GetDataHandler操作了!!参数是:"+map.get("config"));
+		System.out.println("TESTA execute");
+		map.put("TESTA是第"+map.get("index")+"次运行的", "TESTA操作了!!参数是:"+map.get("config"));
 	}
 }
