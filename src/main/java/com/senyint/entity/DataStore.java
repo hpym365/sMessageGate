@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.senyint.util.CloneUtils;
+
 public class DataStore extends HashMap<String, Object> {
 
 	/**

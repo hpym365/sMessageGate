@@ -18,6 +18,7 @@ import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
+import com.senyint.util.CloneUtils;
 
 @Component("RECIVESTREAM")
 public class ReciveStreamHandler extends BaseHandler implements Handler {
@@ -37,9 +38,9 @@ public class ReciveStreamHandler extends BaseHandler implements Handler {
 		dataStore.setIn(in);
 
 		String streamType = this.getStreamType(dataStore);
-		if(streamType == null)
+		if (streamType == null)
 			throw new RuntimeException("流文件类型检查失败  只支持 xml json");
-		
+
 		dataStore.setStreamType(streamType);
 		System.out.println("ReciveStreamHandler execute");
 	}
@@ -61,7 +62,9 @@ public class ReciveStreamHandler extends BaseHandler implements Handler {
 	}
 
 	public String getStreamType(DataStore dataStore) {
-		InputStream in = dataStore.getIn();
+		InputStream in = CloneUtils.clone(dataStore.getIn());
+		BufferedReader s = new BufferedReader(new InputStreamReader(in));
+		BufferedReader str = CloneUtils.clone(s);
 		// ,@Value("aa") String encoding
 		String encoding = "";
 		// 获取配置文件 以什么编码解析 默认UTF-8
@@ -72,16 +75,15 @@ public class ReciveStreamHandler extends BaseHandler implements Handler {
 		BufferedReader reader;
 		try {
 			reader = new BufferedReader(new InputStreamReader(in, encoding));
-			String streamStr ;
-			if ((streamStr=reader.readLine()) != null) {
+			String streamStr;
+			if ((streamStr = reader.readLine()) != null) {
 				switch (streamStr.substring(0, 1)) {
 				case "<":
 					return "XML";
 				case "{":
 					return "JSON";
 				default:
-					return null;
-
+					return "";
 				}
 			}
 		} catch (UnsupportedEncodingException e) {
@@ -92,6 +94,6 @@ public class ReciveStreamHandler extends BaseHandler implements Handler {
 			e.printStackTrace();
 		}
 
-		return null;
+		return "XML";
 	}
 }
