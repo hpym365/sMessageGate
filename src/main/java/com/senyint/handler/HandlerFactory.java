@@ -26,22 +26,23 @@ public class HandlerFactory {
 	@Autowired
 	ApplicationContext app;
 
+	@SuppressWarnings("unchecked")
 	public List<Config> getHandler(String methodName) {
 
 		String handlerStr = env.getProperty(methodName + ".serv.handlerlist");
 		if (handlerStr == null)
 			throw new RuntimeException("请检查配置文件:未配置" + methodName + ".serv.handlerlist");
 
-		String[] handlerArr = null;
-		try {
-			handlerArr = handlerStr.split(",");
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(
-					methodName + ".serv.handlerlist:配置转换数组错误,配置样例qrsqd.serv.list=getdata,conVerTData。Tip:不区分大小写");
-		}
+//		String[] handlerArr = null;
+//		try {
+//			handlerArr = handlerStr.split(",");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			throw new RuntimeException(
+//					methodName + ".serv.handlerlist:配置转换数组错误,配置样例qrsqd.serv.list=getdata,conVerTData。Tip:不区分大小写");
+//		}
 
-		Map map = null;
+		Map<String,Object> map = null;
 		try {
 			map = JsonUtil.json2Map(handlerStr);
 		} catch (Exception e) {
@@ -50,7 +51,7 @@ public class HandlerFactory {
 		}
 		System.out.println(map);
 
-		List<Map> handlerlist = (List<Map>) map.get("hanlderlist");
+		List<Map<String,Object>> handlerlist = (List<Map<String, Object>>) map.get("hanlderlist");
 
 		// for (int i = 0; i < handlerArr.length; i++) {
 		// Map configMap;
@@ -115,15 +116,16 @@ public class HandlerFactory {
 		return getHandlerByList(handlerlist);
 	}
 
-	public List<Config> getHandlerByList(List<Map> handlerlist) {
+	@SuppressWarnings("unchecked")
+	public List<Config> getHandlerByList(List<Map<String,Object>> handlerlist) {
 		List<Config> handlerInstanceList = new ArrayList<Config>();
 
 		for (int i = 0; i < handlerlist.size(); i++) {
 			Config cfg = new Config();
-			Map config = handlerlist.get(i);
+			Map<String,Object> config = handlerlist.get(i);
 			String handlerName = (String) config.get("handler");
 			String handlerConfig = (String) config.get("config");
-			List depList = (List) config.get("dep");
+			List<Map<String,Object>> depList = (List<Map<String,Object>>) config.get("dep");
 
 //			System.out.println(handlerName);
 			Handler handler = (Handler) app.getBean(handlerName.toUpperCase());

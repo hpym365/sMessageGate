@@ -9,6 +9,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import com.senyint.entity.DataStore;
+import com.senyint.entity.SystemConstants;
 import com.senyint.util.YamlUtil;
 
 /**
@@ -26,9 +28,9 @@ public class ServiceFactory {
 
 	Serv serv;
 
-	public Serv getServ(Map<String,Object> map) {
+	public Serv getServ(DataStore dataStore) {
 		
-		String servName = env.getProperty(map.get("commondName") + ".serv");
+		String servName = env.getProperty(dataStore.getRequestCommand() + ".serv");
 
 		try {
 			serv = (Serv) app.getBean(servName);

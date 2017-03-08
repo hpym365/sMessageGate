@@ -1,6 +1,7 @@
 package com.senyint.entity;
 
 import java.util.List;
+import java.util.Map;
 
 import com.senyint.handler.Handler;
 
@@ -10,7 +11,7 @@ public class Config {
 
 	private String handlerConfig;
 
-	private List<String> depList;
+	private List<Map<String,Object>> depList;
 	
 	private int index;
 	
@@ -38,11 +39,11 @@ public class Config {
 		this.handlerConfig = handlerConfig;
 	}
 
-	public List<String> getDepList() {
+	public List<Map<String,Object>> getDepList() {
 		return depList;
 	}
 
-	public void setDepList(List<String> depList) {
+	public void setDepList(List<Map<String,Object>> depList) {
 		this.depList = depList;
 	}
 

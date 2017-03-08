@@ -1,11 +1,15 @@
 package com.senyint.serv.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.senyint.entity.Config;
+import com.senyint.entity.DataStore;
+import com.senyint.entity.SystemConstants;
 import com.senyint.serv.Serv;
 
 /**
@@ -15,8 +19,13 @@ import com.senyint.serv.Serv;
 @Component("cancel")
 public class CancelServ extends BaseServ implements Serv {
 
-	public void init(Map<String,Object> map) {
+	public void init(DataStore dataStore) {
 		System.out.println("ConfirmServ start...execute handlers..");
-		this.executeHandlerList(map);
+		this.executeHandlerList(dataStore);
+
+		List<Config> list = dataStore.getHandlerExecuteNav();
+		for (Config cfg : list) {
+			System.out.println(cfg.getHandler());
+		}
 	}
 }

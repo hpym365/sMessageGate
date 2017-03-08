@@ -1,8 +1,8 @@
 package com.senyint.handler;
 
-import java.util.Map;
+import com.senyint.entity.DataStore;
 
 public interface Handler {
 
-	void execute(Map<String,Object> map);
+	void execute(DataStore dataStore);
 }

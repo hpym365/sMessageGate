@@ -1,22 +1,20 @@
 package com.senyint.handler;
 
-import java.util.List;
 import java.util.Map;
 
-public class BaseHandler implements Handler{
-	
-	private List<String> depList;
+import com.senyint.entity.Config;
+import com.senyint.entity.DataStore;
+
+public class BaseHandler implements Handler {
+
+	public Config getConfig(DataStore dataStore) {
+		Config config = (Config) dataStore.get(this.toString());
+		return config;
+	}
 
 	@Override
-	public void execute(Map<String, Object> map) {
+	public void execute(DataStore dataStore) {
 		// TODO Auto-generated method stub
-		
 	}
-	
-	public void depInvoke(){
-		
-	}
-	
-	
 
 }

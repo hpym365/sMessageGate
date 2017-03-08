@@ -1,15 +1,28 @@
 package com.senyint.ctrl;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.senyint.entity.DataStore;
+import com.senyint.entity.SystemConstants;
 import com.senyint.serv.Serv;
 import com.senyint.serv.ServiceFactory;
 import com.senyint.util.YamlUtil;
@@ -22,29 +35,68 @@ import com.senyint.util.YamlUtil;
 @RequestMapping("/query")
 public class QueryController {
 
-	Serv serv;
+	Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
 	ServiceFactory servFactory;
 
-	@RequestMapping("{method}")
-	public Map<String, Object> init(@PathVariable("method") String method) {
-//		String method = "qrsqd";// 流里获取到的传入执行哪个service
-		//测试 地址http://localhost:8080/query/qxsqd or qrsqd 见配置application.properties
+	@RequestMapping("{command}")
+	public DataStore init(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("command") String requestCommand) throws IOException {
+		// String method = "qrsqd";// 流里获取到的传入执行哪个service
+		// 测试 地址http://localhost:8080/query/qxsqd or qrsqd
+		// 见配置application.properties
 		Map yaml = YamlUtil.yaml2Map("application.yaml");
 		Properties yaml2Properties = YamlUtil.yaml2Properties("application.yaml");
-		
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("commondName",method);
-		serv = servFactory.getServ(map);
-//		map.put("serv",serv.toString());
-//		map.put("servFactory",servFactory.toString());
-//		System.out.println(this);
-		serv.init(map);
 
-		return map;
+		// ByteArrayInputStream in = this.reciveStream(request);
+
+		DataStore dataStore = new DataStore();
+		dataStore.setRequest(request);
+		dataStore.setRequestCommand(requestCommand);
+
+		
+		Serv serv = servFactory.getServ(dataStore);
+		// map.put("serv",serv.toString());
+		// map.put("servFactory",servFactory.toString());
+		// System.out.println(this);
+		serv.init(dataStore);
+
+		return dataStore;
 	}
 
+	
+	public String Inputstr2Str_Reader(InputStream in, String encode)  
+	   {  
+	         
+	       String str = "";  
+	       try  
+	       {  
+	           if (encode == null || encode.equals(""))  
+	           {  
+	               // 默认以utf-8形式  
+	               encode = "utf-8";  
+	           }  
+	           BufferedReader reader = new BufferedReader(new InputStreamReader(in, encode));  
+	           StringBuffer sb = new StringBuffer();  
+	             
+	           while ((str = reader.readLine()) != null)  
+	           {  
+	               sb.append(str).append("\n");  
+	           }  
+	           return sb.toString();  
+	       }  
+	       catch (UnsupportedEncodingException e1)  
+	       {  
+	           e1.printStackTrace();  
+	       }  
+	       catch (IOException e)  
+	       {  
+	           e.printStackTrace();  
+	       }  
+	         
+	       return str;  
+	   }  
 	// @Autowired
 	// @Qualifier(method)
 	// public void setBase(BaseInterface base) {
