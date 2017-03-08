@@ -41,36 +41,8 @@ public class StreamConver extends BaseHandler implements Handler{
 		
 	}
 	
-	@SuppressWarnings("unused")
-	public void convertXmlToMap(DataStore dataStore){
-//		BufferedReader br = new BufferedReader(new InputStreamReader(dataStore.getIn(), "GBK"));
-//		String s = "";
-//		while(br.readLine()!=null){
-//			s=s+br.readLine();
-//		}
-//		br.readLine();
-		InputStream in = dataStore.getIn();
-		SAXReader rd = new SAXReader();
-		rd.setEncoding("UTF-8");
-		Document doc = null;
-		try {
-//			ByteArrayOutputStream output = new ByteArrayOutputStream();
-//					int temp = in.read();
-//					while (temp != -1) {
-//						output.write(temp);
-//						temp = in.read();
-//					}
-//
-//					ByteArrayInputStream input = new ByteArrayInputStream(output.toByteArray());
-//					BufferedReader br = new BufferedReader(new InputStreamReader(input, "UTF-8"));	
-			BufferedReader reader = new BufferedReader(new InputStreamReader(dataStore.getIn(), "UTF-8"));
-			doc = new SAXReader().read(reader);
-			reader.reset();
-			String streamStr = reader.readLine();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void convertXmlToMap(DataStore dataStore) throws DocumentException{
+		Document doc = new SAXReader().read(new ByteArrayInputStream(dataStore.getStreamStr().getBytes()));
 		Map<String, Object> orginMap = MapUtil.Dom2Map(doc.getRootElement());
 		dataStore.setOrginData(orginMap);
 		System.out.println(orginMap);

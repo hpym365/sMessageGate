@@ -23,7 +23,7 @@ public class DataStore extends HashMap<String, Object> {
 
 	private Map<String, Object> resultData;
 
-	private InputStream in;
+	private String streamStr;
 
 	private HttpServletRequest request;
 
@@ -32,6 +32,24 @@ public class DataStore extends HashMap<String, Object> {
 	private List<Config> handlerExecuteNav;
 
 	private String streamType;
+	
+	private String encoding;
+
+	public String getEncoding() {
+		return encoding;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
+
+	public String getStreamStr() {
+		return streamStr;
+	}
+
+	public void setStreamStr(String streamStr) {
+		this.streamStr = streamStr;
+	}
 
 	public String getStreamType() {
 		return streamType;
@@ -79,14 +97,6 @@ public class DataStore extends HashMap<String, Object> {
 
 	public void setResultData(Map<String, Object> resultData) {
 		this.resultData = resultData;
-	}
-
-	public InputStream getIn() {
-		return in;
-	}
-
-	public void setIn(InputStream in) {
-		this.in = in;
 	}
 
 	public HttpServletRequest getRequest() {

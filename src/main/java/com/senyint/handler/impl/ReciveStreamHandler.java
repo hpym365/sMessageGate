@@ -27,15 +27,14 @@ public class ReciveStreamHandler extends BaseHandler implements Handler {
 
 	public void execute(DataStore dataStore) {
 		Config config = this.getConfig(dataStore);
-		HttpServletRequest request = dataStore.getRequest();
-		InputStream in = null;
+		String streamStr = "";
 		try {
-			in = this.reciveStream(request);
+			streamStr = this.reciveStream(dataStore);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		dataStore.setIn(in);
+		dataStore.setStreamStr(streamStr);
 
 		String streamType = this.getStreamType(dataStore);
 		if (streamType == null)
@@ -45,55 +44,42 @@ public class ReciveStreamHandler extends BaseHandler implements Handler {
 		System.out.println("ReciveStreamHandler execute");
 	}
 
-	public InputStream reciveStream(HttpServletRequest request) throws IOException {
+	public String reciveStream(DataStore dataStore) throws IOException {
+		HttpServletRequest request = dataStore.getRequest();
 		InputStream in = request.getInputStream();
+
+		BufferedReader reader;
+		String streamStr = "";
+		try {
+			reader = new BufferedReader(new InputStreamReader(in, dataStore.getEncoding()));
+			String temp = "";
+			while ((temp = reader.readLine()) != null) {
+				streamStr = streamStr + temp;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		String reAddr = request.getRemoteAddr();
 		String reHost = request.getRemoteHost();
 		int rePort = request.getRemotePort();
-		String reUser = request.getRemoteUser();
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("Got request from Address[" + reAddr + "],Host[" + reHost + "],Port[" + rePort + "],User[" + reUser
-				+ "]");
+		sb.append("Command request from [" + reAddr + "],Host[" + reHost + "],Port[" + rePort + "]");
 		logger.debug(sb.toString());
 
-		return in;
+		return streamStr;
 	}
 
 	public String getStreamType(DataStore dataStore) {
-		InputStream in = CloneUtils.clone(dataStore.getIn());
-		BufferedReader s = new BufferedReader(new InputStreamReader(in));
-		BufferedReader str = CloneUtils.clone(s);
-		// ,@Value("aa") String encoding
-		String encoding = "";
-		// 获取配置文件 以什么编码解析 默认UTF-8
-		if (encoding == null || encoding.equals("")) {
-			// 默认以utf-8形式
-			encoding = "utf-8";
+		switch (dataStore.getStreamStr().substring(0, 1)) {
+		case "<":
+			return "XML";
+		case "{":
+			return "JSON";
+		default:
+			return "";
 		}
-		BufferedReader reader;
-		try {
-			reader = new BufferedReader(new InputStreamReader(in, encoding));
-			String streamStr;
-			if ((streamStr = reader.readLine()) != null) {
-				switch (streamStr.substring(0, 1)) {
-				case "<":
-					return "XML";
-				case "{":
-					return "JSON";
-				default:
-					return "";
-				}
-			}
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return "XML";
 	}
 }
