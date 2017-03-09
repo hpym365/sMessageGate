@@ -2,6 +2,7 @@ package com.senyint.entity;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +33,21 @@ public class DataStore extends HashMap<String, Object> {
 	private List<Config> handlerExecuteNav;
 
 	private String streamType;
-	
+
 	private String encoding;
+
+	private List<List<Map<String, Object>>> selectList;
+
+	public List<List<Map<String, Object>>> getSelectList() {
+		return selectList;
+	}
+
+	public void addSelectList(List<Map<String, Object>> selectList) {
+		if(this.selectList==null)
+			this.selectList = new ArrayList<List<Map<String, Object>>>();
+		
+		this.selectList.add(selectList);
+	}
 
 	public String getEncoding() {
 		return encoding;

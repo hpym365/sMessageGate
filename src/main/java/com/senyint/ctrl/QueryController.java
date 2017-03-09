@@ -41,7 +41,7 @@ public class QueryController {
 	ServiceFactory servFactory;
 
 	@RequestMapping("{command}")
-	public DataStore init(HttpServletRequest request, HttpServletResponse response,
+	public Map init(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("command") String requestCommand) throws IOException {
 		// String method = "qrsqd";// 流里获取到的传入执行哪个service
 		// 测试 地址http://localhost:8080/query/qxsqd or qrsqd
@@ -62,44 +62,7 @@ public class QueryController {
 		// System.out.println(this);
 		serv.init(dataStore);
 
-		return dataStore;
+		return dataStore.getOrginData();
 	}
 
-	
-	public String Inputstr2Str_Reader(InputStream in, String encode)  
-	   {  
-	         
-	       String str = "";  
-	       try  
-	       {  
-	           if (encode == null || encode.equals(""))  
-	           {  
-	               // 默认以utf-8形式  
-	               encode = "utf-8";  
-	           }  
-	           BufferedReader reader = new BufferedReader(new InputStreamReader(in, encode));  
-	           StringBuffer sb = new StringBuffer();  
-	             
-	           while ((str = reader.readLine()) != null)  
-	           {  
-	               sb.append(str).append("\n");  
-	           }  
-	           return sb.toString();  
-	       }  
-	       catch (UnsupportedEncodingException e1)  
-	       {  
-	           e1.printStackTrace();  
-	       }  
-	       catch (IOException e)  
-	       {  
-	           e.printStackTrace();  
-	       }  
-	         
-	       return str;  
-	   }  
-	// @Autowired
-	// @Qualifier(method)
-	// public void setBase(BaseInterface base) {
-	// this.base = base;
-	// }
 }
