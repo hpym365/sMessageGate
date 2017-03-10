@@ -1,21 +1,23 @@
 package com.senyint.handler.impl;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.senyint.config.DynamicDataSource;
+import com.senyint.config.ExecuteSql;
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
-import com.senyint.test.DynamicDataSource;
-import com.senyint.util.GroovyUtils;
+import com.senyint.util.ScriptUtils;
+
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 /*
  */
@@ -25,57 +27,61 @@ public class DatabaseHandler extends BaseHandler implements Handler {
 	Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
-	DynamicDataSource dds;
-
-	JdbcTemplate jdbc;
-
-	@Autowired
-	Environment env;
+	ExecuteSql exec;
 
 	@Override
+	// @Autowired
 	public void execute(DataStore dataStore) {
 		Config config = this.getConfig(dataStore);// 当前handler的配置
 
-		String handlerConfig = config.getHandlerConfig();
+		Object[] params = { dataStore.getOrginData().get("DATA") };
 
-		// 读取配置增删查改?
-		String sqlType = env.getProperty(handlerConfig + ".type");
-		String script = env.getProperty(handlerConfig + ".script");
-		String dataSource = env.getProperty(handlerConfig + ".dataSource");
+		this.runScript(dataStore, config, params);
 
-		jdbc = dds.getJdbcTemplate(dataSource);
+		// Object res = GroovyUtils.runGroovyScriptByFile(null, script, "hello",
+		// new Map[] { map });
+		// dataStore.getOrginData().get("DATA");
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("name", "张三");
-		map.put("age", 20);
-	//	Object res = GroovyUtils.runGroovyScriptByFile(null, script, "hello", new Map[] { map });
-//		dataStore.getOrginData().get("DATA");
-		Object res = GroovyUtils.runGroovyScriptByFile(null, script, "hello", new Map[] { (Map)dataStore.getOrginData().get("DATA") });
-
-		// TODO Auto-generated method stub
-
-		List<Map<String, Object>> queryForList = jdbc.queryForList(res.toString());
-		
-		System.out.println(queryForList);
+		System.out.println(dataStore.getSelectList());
 	}
 
-	public void executeSql(DataStore dataStore, String sqlType, String sql) {
+	public void runScript(DataStore dataStore, Config config, Object[] params) {
+		try {
+			Object sqlRes = this.runScriptByConfig(config, params);
+			if (sqlRes instanceof Collection) {
+				@SuppressWarnings("unchecked")
+				List<String> sqlList = (List<String>) sqlRes;
 
-		switch (sqlType) {
-		default:
-			dataStore.addSelectList(this.selectSql(sql));
-		case "insert":
-			this.selectSql(sql);
-		case "update":
-			this.selectSql(sql);
-		case "delete":
-			this.selectSql(sql);
+				sqlList.forEach(sql -> {
+					exec.executeSql(dataStore, config.getJdbcTemplate(), config.getSqlType(), sql);
+				});
+			} else if (sqlRes instanceof String) {
+				String sql = (String) sqlRes;
+				exec.executeSql(dataStore, config.getJdbcTemplate(), config.getSqlType(), sql);
+			} else {
+				logger.error(sqlRes);
+				throw new RuntimeException("当前执行脚本" + config.getScriptFile() + "的返回类型应为List或String(执行一条或多条sql)");
+			}
+		} catch (Exception e) {
+			logger.error("当前执行脚本" + config.getScriptFile() + "的返回类型应为List或String(执行一条或多条sql)");
+			e.printStackTrace();
+			// throw new RuntimeException("当前执行脚本" + config.getScriptFile() +
+			// "的返回类型应为List或String(执行一条或多条sql)");
+			// e.printStackTrace();
+		}
+	}
+
+	public Object runScriptByConfig(Config config, Object[] params) {
+		Object res = null;
+		if ("groovy".equals(config.getScriptType())) {
+			res = ScriptUtils.runGroovyScriptByFile(null, config.getScriptFile(), config.getFunName(), params);
+		} else {
+			res = ScriptUtils.runJavaScriptByFile(null, config.getScriptFile(), config.getFunName(), params);
+		}
+		if (res instanceof ScriptObjectMirror) {
+			return ((ScriptObjectMirror) res).values();
 		}
 
+		return res;
 	}
-
-	public List<Map<String, Object>> selectSql(String sql) {
-		return jdbc.queryForList(sql);
-	}
-
 }

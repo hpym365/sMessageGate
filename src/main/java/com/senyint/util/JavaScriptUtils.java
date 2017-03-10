@@ -1,5 +1,7 @@
 package com.senyint.util;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +11,11 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -20,14 +25,17 @@ import groovy.util.GroovyScriptEngine;
 
 /**
  * @author hpym365
- * @version 创建时间：2017年2月28日 下午9:06:55 
- * 类说明 java调用 groovy 学习
+ * @version 创建时间：2017年2月28日 下午9:06:55 类说明 java调用 groovy 学习
  */
 @Component
-public class GroovyUtils {
+@ConfigurationProperties(prefix="spring.datasource.primary")
+public class JavaScriptUtils {
 
 	@Autowired
 	Environment env;
+	
+	@Value("$javascript.path")
+	String jsPath;
 
 	/**
 	 * @author hpym365
@@ -41,20 +49,32 @@ public class GroovyUtils {
 	 *            执行脚本的参数
 	 * @return 返回执行结果
 	 */
-	public static Object runGroovyScriptByFile(String[] filepath, String filename, Map<String, Object> params) {
+	public static Object runJavaScriptByFile(String filepath, String filename, String funname, Object[] params) {
 
-		if (filepath == null || filepath.length == 0)
-			filepath = new String[] { "grovvy\\" };// 定义Groovy脚本引擎的根路径
+		if (filepath == null)
+			filepath = "groovy\\";// 定义Groovy脚本引擎的根路径
 
+		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngine engine = manager.getEngineByName("javascript");
 		try {
-			// String[]{".\\src\\main\\java\\com\\senyint\\util\\"}
-			GroovyScriptEngine engine = new GroovyScriptEngine(filepath);
-			return engine.run(filename, new Binding(params));
-		} catch (Exception e) {
+			FileReader fr = new FileReader(filepath + filename);
+			@SuppressWarnings("unused")
+			Object obj = engine.eval(new FileReader(filepath + filename));
+			Invocable inv = (Invocable) engine;
+			Object res = inv.invokeFunction(funname, params);
+			return res;
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
+		} catch (ScriptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		// inv.invokeMethod(thiz, name, args)
+		return null;
 	}
 
 	/**
@@ -94,7 +114,7 @@ public class GroovyUtils {
 	 * @param script
 	 *            要执行的脚本 通过字符串传入，应用场景 如从数据库中读取出来的脚本等
 	 * @param params
-	 *            执行grovvy需要传入的参数
+	 *            执行groovy需要传入的参数
 	 * @return 脚本执行结果
 	 */
 	public static Object runGroovyScript(String script, Map<String, Object> params) {
@@ -123,7 +143,7 @@ public class GroovyUtils {
 	 * @param funName
 	 *            要执行的方法名
 	 * @param params
-	 *            执行grovvy需要传入的参数
+	 *            执行groovy需要传入的参数
 	 * @return
 	 */
 	public static Object runGroovyScript(String script, String funName, Object[] params) {
@@ -162,7 +182,7 @@ public class GroovyUtils {
 	}
 
 	public static void main(String[] args) {
-		GroovyUtils groovy = new GroovyUtils();
+		JavaScriptUtils groovy = new JavaScriptUtils();
 		groovy.getScriptEngineFactoryList();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("language", "groovy test");

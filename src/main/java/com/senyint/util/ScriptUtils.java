@@ -1,20 +1,24 @@
 package com.senyint.util;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.script.Bindings;
 import javax.script.Invocable;
-import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
 import groovy.lang.Binding;
 import groovy.lang.Script;
@@ -22,54 +26,66 @@ import groovy.util.GroovyScriptEngine;
 
 /**
  * @author hpym365
- * @version 创建时间：2017年2月28日 下午9:06:55 
- * 类说明 java调用 groovy 学习
+ * @version 创建时间：2017年2月28日 下午9:06:55 类说明 java调用 groovy 学习
  */
-@RestController
-public class Groovy {
+@Component
+@ConfigurationProperties(prefix = "script")
+public class ScriptUtils {
 
-	@Autowired
-	Environment env;
+	Logger logger = Logger.getLogger(this.getClass());
+	
+	private String groovyPath;
+	private String javascriptPath;
 
-	public static void testGroovy2() {
-		try {
-			// String[] roots = new
-			// String[]{".\\src\\main\\java\\com\\senyint\\util\\"}
-			// ;//定义Groovy脚本引擎的根路径
-			String[] roots = new String[] { "groovy\\" };// 定义Groovy脚本引擎的根路径
-			GroovyScriptEngine engine = new GroovyScriptEngine(roots);
+	public static ScriptUtils scriptUtils;
 
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("java", "1.8");
-			map.put("tomcat", "8.0");
-			Binding binding = new Binding();
-			binding.setVariable("language", "Groovy");
-			binding.setVariable("map", map);
-			binding.setVariable("mapa", "mapa");
-			Object value = engine.run("hello.groovy", binding);
-			System.out.println(value);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(e);
-		}
+	@PostConstruct
+	public void initialize() {
+		scriptUtils = this;
+		scriptUtils.javascriptPath = this.javascriptPath == null ? "javascript\\" : this.javascriptPath;
+		scriptUtils.groovyPath = this.groovyPath == null ? "groovy\\" : this.groovyPath;
+		scriptUtils.logger = this.logger;
 	}
 
-	public void testGroovy3() {
+	/**
+	 * @author hpym365
+	 * @创建时间 2017年3月2日 下午10:07:47
+	 * @desc 描述
+	 * @param filepath
+	 *            javascript脚本文件的路径(当参数为null默认指定工程路径下的groovy文件夹)
+	 * @param filename
+	 *            javascript脚本文件名字
+	 * @param params
+	 *            执行脚本的参数
+	 * @return 返回执行结果
+	 */
+	public static Object runJavaScriptByFile(String filepath, String filename, String funname, Object[] params) {
+
+		if (filepath == null)
+			filepath = scriptUtils.javascriptPath;// 定义javascript脚本引擎的根路径
+
+		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngine engine = manager.getEngineByName("javascript");
 		try {
-			ScriptEngineManager factory = new ScriptEngineManager();
-			ScriptEngine engine = factory.getEngineByName("groovy");
-			String HelloLanguage = "def hello(language) {return \"Hello $language\"}";
-			HelloLanguage = env.getProperty("hello");
-			engine.eval(HelloLanguage);
+			FileReader fr = new FileReader(filepath + filename);
+			@SuppressWarnings("unused")
+			Object obj = engine.eval(new FileReader(filepath + filename));
 			Invocable inv = (Invocable) engine;
-			Object[] params = { new String("Groovy") };
-			Object result = inv.invokeFunction("hello", params);
-			assert result.equals("1Hello Groovy");
-			System.err.println(result);
-		} catch (Exception e) {
+			Object res = inv.invokeFunction(funname, params);
+			scriptUtils.logger.debug("执行了脚本文件:"+filepath + filename);
+			return res;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ScriptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// inv.invokeMethod(thiz, name, args)
+		return null;
 	}
 
 	/**
@@ -84,10 +100,10 @@ public class Groovy {
 	 *            执行脚本的参数
 	 * @return 返回执行结果
 	 */
-	public Object runGroovyScriptByFile(String[] filepath, String filename, Map<String, Object> params) {
+	public static Object runGroovyScriptByFile(String[] filepath, String filename, Map<String, Object> params) {
 
 		if (filepath == null || filepath.length == 0)
-			filepath = new String[] { "groovy\\" };// 定义Groovy脚本引擎的根路径
+			filepath = new String[] { scriptUtils.groovyPath };// 定义Groovy脚本引擎的根路径
 
 		try {
 			// String[]{".\\src\\main\\java\\com\\senyint\\util\\"}
@@ -114,7 +130,7 @@ public class Groovy {
 	 *            执行脚本的参数
 	 * @return 返回执行结果
 	 */
-	public Object runGroovyScriptByFile(String[] filepath, String filename, String funname, Object[] params) {
+	public static Object runGroovyScriptByFile(String[] filepath, String filename, String funname, Object[] params) {
 
 		if (filepath == null || filepath.length == 0)
 			filepath = new String[] { "groovy\\" };// 定义Groovy脚本引擎的根路径
@@ -140,7 +156,7 @@ public class Groovy {
 	 *            执行groovy需要传入的参数
 	 * @return 脚本执行结果
 	 */
-	public Object runGroovyScript(String script, Map<String, Object> params) {
+	public static Object runGroovyScript(String script, Map<String, Object> params) {
 		if (script == null || "".equals(script))
 			throw new RuntimeException("方法runGroovyScript无法执行，传入的脚本为空");
 
@@ -169,7 +185,7 @@ public class Groovy {
 	 *            执行groovy需要传入的参数
 	 * @return
 	 */
-	public Object runGroovyScript(String script, String funName, Object[] params) {
+	public static Object runGroovyScript(String script, String funName, Object[] params) {
 		try {
 			ScriptEngineManager factory = new ScriptEngineManager();
 			ScriptEngine engine = factory.getEngineByName("groovy");
@@ -205,7 +221,7 @@ public class Groovy {
 	}
 
 	public static void main(String[] args) {
-		Groovy groovy = new Groovy();
+		ScriptUtils groovy = new ScriptUtils();
 		groovy.getScriptEngineFactoryList();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("language", "groovy test");

@@ -1,4 +1,4 @@
-package com.senyint.test;
+package com.senyint.config;
 
 import java.util.HashMap;
 import java.util.Map;
