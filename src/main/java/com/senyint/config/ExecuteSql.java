@@ -1,41 +1,37 @@
 package com.senyint.config;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Scope;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 
 @Component
 public class ExecuteSql {
 
-	@Autowired
-	Environment env;
-
 	Logger logger = Logger.getLogger(this.getClass());
 
-	public void executeSql(DataStore dataStore, JdbcTemplate jdbc, String sql) {
-
+	public List<Map<String, Object>> executeSql(DataStore dataStore, JdbcTemplate jdbc, String sql) {
+//		List<Map<String, Object>> reslist = new ArrayList<Map<String, Object>>();
 		if (sql.startsWith("select")) {
-			dataStore.addSelectList(this.querySql(jdbc, sql));
+			return this.querySql(jdbc, sql);
+//			dataStore.addSelectList(this.querySql(jdbc, sql));
 		} else if (sql.startsWith("insert")) {
-			this.querySql(jdbc, sql);
+			this.executeSql(jdbc, sql);
+			return null;
 		} else if (sql.startsWith("update")) {
-			this.querySql(jdbc, sql);
+			this.executeSql(jdbc, sql);
+			return null;
 		} else if (sql.startsWith("delete")) {
-			this.querySql(jdbc, sql);
+			this.executeSql(jdbc, sql);
+			return null;
 		}
+		throw new RuntimeException("sql语句错误 请检查拼的sql，不是select insert update delete开头的");
+
 		// switch (sqlType) {
 		// default:
 		//
@@ -51,5 +47,9 @@ public class ExecuteSql {
 
 	public List<Map<String, Object>> querySql(JdbcTemplate jdbc, String sql) {
 		return jdbc.queryForList(sql);
+	}
+
+	public void executeSql(JdbcTemplate jdbc, String sql) {
+		jdbc.execute(sql);
 	}
 }

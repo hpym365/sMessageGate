@@ -1,24 +1,14 @@
 package com.senyint.handler.impl;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.senyint.config.DynamicDataSource;
-import com.senyint.config.ExecuteSql;
 import com.senyint.config.ScriptEngine;
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
-import com.senyint.util.ScriptUtils;
-
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 /*
  */
@@ -35,7 +25,7 @@ public class DatabaseHandler extends BaseHandler implements Handler {
 	public void execute(DataStore dataStore) {
 		Config config = this.getConfig(dataStore);// 当前handler的配置
 
-		Object[] params = { dataStore.getOrginData().get("DATA") };
+		Object[] params = { dataStore.getOrginData(), dataStore.getSelectList(), dataStore.getResultData() ,dataStore.getTempData()};
 
 		engine.runScriptExecSql(dataStore, config.getScriptType(), config.getScriptFile(), config.getFunName(),
 				config.getJdbcTemplate(), params);

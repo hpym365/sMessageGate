@@ -6,19 +6,15 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Scope;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.senyint.util.PropertiesUtils;
+
 @Component
 public class DynamicDataSource {
-
-	@Autowired
-	Environment env;
-
+	
 	Logger logger = Logger.getLogger(this.getClass());
 	
 	private Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
@@ -31,10 +27,10 @@ public class DynamicDataSource {
 			return dataSourceMap.get(dsName);
 		}
 
-		String url = env.getProperty("datasource." + dsName + ".url");
-		String driverClassName = env.getProperty("datasource." + dsName + ".driver");
-		String username = env.getProperty("datasource." + dsName + ".username");
-		String password = env.getProperty("datasource." + dsName + ".password");
+		String url = PropertiesUtils.getProperties("datasource." + dsName + ".url");
+		String driverClassName = PropertiesUtils.getProperties("datasource." + dsName + ".driver");
+		String username = PropertiesUtils.getProperties("datasource." + dsName + ".username");
+		String password = PropertiesUtils.getProperties("datasource." + dsName + ".password");
 
 		DataSourceBuilder factory = DataSourceBuilder.create().driverClassName(driverClassName).url(url)
 				.username(username).password(password);

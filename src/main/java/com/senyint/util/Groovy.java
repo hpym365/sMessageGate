@@ -6,14 +6,10 @@ import java.util.Map;
 
 import javax.script.Bindings;
 import javax.script.Invocable;
-import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import groovy.lang.Binding;
@@ -27,9 +23,6 @@ import groovy.util.GroovyScriptEngine;
  */
 @RestController
 public class Groovy {
-
-	@Autowired
-	Environment env;
 
 	public static void testGroovy2() {
 		try {
@@ -59,7 +52,7 @@ public class Groovy {
 			ScriptEngineManager factory = new ScriptEngineManager();
 			ScriptEngine engine = factory.getEngineByName("groovy");
 			String HelloLanguage = "def hello(language) {return \"Hello $language\"}";
-			HelloLanguage = env.getProperty("hello");
+			HelloLanguage = PropertiesUtils.getProperties("hello");
 			engine.eval(HelloLanguage);
 			Invocable inv = (Invocable) engine;
 			Object[] params = { new String("Groovy") };

@@ -22,6 +22,15 @@ public class Config {
 	private String dataSource;
 	private String scriptFile;
 	private String funName;
+	private String dataTag;
+
+	public String getDataTag() {
+		return dataTag;
+	}
+
+	public void setDataTag(String dataTag) {
+		this.dataTag = dataTag;
+	}
 
 	private JdbcTemplate jdbcTemplate;
 

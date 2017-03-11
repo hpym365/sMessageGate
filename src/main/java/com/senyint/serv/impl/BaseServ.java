@@ -3,24 +3,20 @@ package com.senyint.serv.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.HandlerFactory;
+import com.senyint.util.PropertiesUtils;
 
 public class BaseServ {
-
-	@Autowired
-	Environment env;
 
 	@Autowired
 	HandlerFactory handlerFactory;
 
 	public void executeHandlerList(DataStore dataStore) {
 
-		this.getConfig(dataStore);
+		this.getDataStoreConfig(dataStore);
 
 		List<Config> handlerList = handlerFactory.getHandler(dataStore.getRequestCommand());
 		handlerList.forEach(cfg -> {
@@ -36,9 +32,14 @@ public class BaseServ {
 		});
 	}
 
-	public void getConfig(DataStore dataStore) {
-		String encoding = env.getProperty(dataStore.getRequestCommand() + ".encoding") == null ? "UTF-8"
-				: env.getProperty(dataStore.getRequestCommand() + ".encoding");// 默认 utf-8
+	// 每个service共享一个datastore 所以公用的配置放这里 config是每个handler的
+	public void getDataStoreConfig(DataStore dataStore) {
+		// 每个handler都需要读取的配置
+		String dataTag = PropertiesUtils.getProperties(dataStore.getRequestCommand() + ".dataTag");
+		dataStore.setDataTag(dataTag);
+
+		String encoding = PropertiesUtils.getProperties(dataStore.getRequestCommand() + ".encoding", "UTF-8");
 		dataStore.setEncoding(encoding);
 	}
+
 }

@@ -24,29 +24,34 @@ import com.senyint.util.MapUtil;
 /*
  */
 @Component("STREAMCONVERT")
-public class StreamConver extends BaseHandler implements Handler{
+public class StreamConver extends BaseHandler implements Handler {
 
 	Logger logger = Logger.getLogger(this.getClass());
-	
+
 	@Override
 	public void execute(DataStore dataStore) {
-		Config config = this.getConfig(dataStore);//当前handler的配置
+		Config config = this.getConfig(dataStore);// 当前handler的配置
 		// TODO Auto-generated method stub
 		try {
-			this.convertXmlToMap(dataStore);
+			this.convertXmlToMap(dataStore, dataStore.getDataTag());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	public void convertXmlToMap(DataStore dataStore) throws DocumentException{
+
+	@SuppressWarnings("unchecked")
+	public void convertXmlToMap(DataStore dataStore, String dataTag) throws DocumentException {
 		Document doc = new SAXReader().read(new ByteArrayInputStream(dataStore.getStreamStr().getBytes()));
 		Map<String, Object> orginMap = MapUtil.Dom2Map(doc.getRootElement());
-		dataStore.setOrginData(orginMap);
+		if (dataTag != null) {
+			dataStore.setOrginData((Map<String, Object>) orginMap.get(dataTag));
+		} else {
+			dataStore.setOrginData(orginMap);
+		}
 		System.out.println(orginMap);
-		//config 加入到datastore   然后根据读出来的流 判断什么开始的  如果是{ json  如果是<xml 如果是？？。。。。
+		// config 加入到datastore 然后根据读出来的流 判断什么开始的 如果是{ json 如果是<xml 如果是？？。。。。
 	}
 
 }

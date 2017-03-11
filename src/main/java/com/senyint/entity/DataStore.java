@@ -1,15 +1,11 @@
 package com.senyint.entity;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.senyint.util.CloneUtils;
 
 public class DataStore extends HashMap<String, Object> {
 
@@ -22,7 +18,9 @@ public class DataStore extends HashMap<String, Object> {
 
 	private Map<String, Object> orginData;
 
-	private Map<String, Object> resultData;
+	private Object resultData;
+	
+	private Object tempData;
 
 	private String streamStr;
 
@@ -35,6 +33,24 @@ public class DataStore extends HashMap<String, Object> {
 	private String streamType;
 
 	private String encoding;
+	private String dataTag;
+	
+	
+	public Object getTempData() {
+		return tempData;
+	}
+
+	public void setTempData(Object tempData) {
+		this.tempData = tempData;
+	}
+
+	public String getDataTag() {
+		return dataTag;
+	}
+
+	public void setDataTag(String dataTag) {
+		this.dataTag = dataTag;
+	}
 
 	private List<List<Map<String, Object>>> selectList;
 
@@ -43,9 +59,9 @@ public class DataStore extends HashMap<String, Object> {
 	}
 
 	public void addSelectList(List<Map<String, Object>> selectList) {
-		if(this.selectList==null)
+		if (this.selectList == null)
 			this.selectList = new ArrayList<List<Map<String, Object>>>();
-		
+
 		this.selectList.add(selectList);
 	}
 
@@ -105,11 +121,12 @@ public class DataStore extends HashMap<String, Object> {
 		this.orginData = orginData;
 	}
 
-	public Map<String, Object> getResultData() {
+
+	public Object getResultData() {
 		return resultData;
 	}
 
-	public void setResultData(Map<String, Object> resultData) {
+	public void setResultData(Object resultData) {
 		this.resultData = resultData;
 	}
 

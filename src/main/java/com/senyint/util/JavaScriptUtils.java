@@ -13,10 +13,8 @@ import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import groovy.lang.Binding;
@@ -30,9 +28,6 @@ import groovy.util.GroovyScriptEngine;
 @Component
 @ConfigurationProperties(prefix="spring.datasource.primary")
 public class JavaScriptUtils {
-
-	@Autowired
-	Environment env;
 	
 	@Value("$javascript.path")
 	String jsPath;

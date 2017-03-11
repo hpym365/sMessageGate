@@ -1,27 +1,20 @@
 package com.senyint.handler;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.senyint.entity.Config;
 import com.senyint.util.JsonUtil;
+import com.senyint.util.PropertiesUtils;
 
 @Component
 public class HandlerFactory {
 
-	@Autowired
-	Environment env;
 
 	@Autowired
 	ApplicationContext app;
@@ -29,7 +22,7 @@ public class HandlerFactory {
 	@SuppressWarnings("unchecked")
 	public List<Config> getHandler(String methodName) {
 
-		String handlerStr = env.getProperty(methodName + ".serv.handlerlist");
+		String handlerStr = PropertiesUtils.getProperties(methodName + ".serv.handlerlist");
 		if (handlerStr == null)
 			throw new RuntimeException("请检查配置文件:未配置" + methodName + ".serv.handlerlist");
 
@@ -113,29 +106,34 @@ public class HandlerFactory {
 		// handlerInstanceList.add(handler);
 		// });
 		// handlerArr
-		return getHandlerByList(handlerlist);
+		return getHandlerByHandlerList(handlerlist);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Config> getHandlerByList(List<Map<String,Object>> handlerlist) {
+	public List<Config> getHandlerByHandlerList(List<Map<String,Object>> handlerlist) {
 		List<Config> handlerInstanceList = new ArrayList<Config>();
 
 		for (int i = 0; i < handlerlist.size(); i++) {
-			Config cfg = new Config();
-			Map<String,Object> config = handlerlist.get(i);
-			String handlerName = (String) config.get("handler");
-			String handlerConfig = (String) config.get("config");
-			List<Map<String,Object>> depList = (List<Map<String,Object>>) config.get("dep");
-
-//			System.out.println(handlerName);
-			Handler handler = (Handler) app.getBean(handlerName.toUpperCase());
-			cfg.setHandler(handler);
-			cfg.setHandlerConfig(handlerConfig);
-			cfg.setDepList(depList);
-			cfg.setIndex(i);
+			Config cfg = this.getHandlerBaseConfig(handlerlist.get(i));
 			handlerInstanceList.add(cfg);
 		}
 		
 		return handlerInstanceList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Config getHandlerBaseConfig(Map<String,Object> config){
+		Config cfg = new Config();
+		String handlerName = (String) config.get("handler");
+		String handlerConfig = (String) config.get("config");
+		List<Map<String,Object>> depList = (List<Map<String,Object>>) config.get("dep");
+
+//		System.out.println(handlerName);
+		Handler handler = (Handler) app.getBean(handlerName.toUpperCase());
+		cfg.setHandler(handler);
+		cfg.setHandlerConfig(handlerConfig);
+		cfg.setDepList(depList);
+//		cfg.setIndex(i);
+		return cfg;
 	}
 }

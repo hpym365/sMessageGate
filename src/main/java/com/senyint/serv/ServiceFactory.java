@@ -1,17 +1,11 @@
 package com.senyint.serv;
 
-import java.util.Map;
-import java.util.Properties;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.senyint.entity.DataStore;
-import com.senyint.entity.SystemConstants;
-import com.senyint.util.YamlUtil;
+import com.senyint.util.PropertiesUtils;
 
 /**
  * @author hpym365
@@ -21,16 +15,13 @@ import com.senyint.util.YamlUtil;
 public class ServiceFactory {
 
 	@Autowired
-	Environment env;
-
-	@Autowired
 	ApplicationContext app;
 
 	Serv serv;
 
 	public Serv getServ(DataStore dataStore) {
 		
-		String servName = env.getProperty(dataStore.getRequestCommand() + ".serv");
+		String servName = PropertiesUtils.getProperties(dataStore.getRequestCommand() + ".serv","default");
 
 		try {
 			serv = (Serv) app.getBean(servName);

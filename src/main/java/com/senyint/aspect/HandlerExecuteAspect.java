@@ -50,7 +50,7 @@ public class HandlerExecuteAspect {
 		if (config.getDepList() != null) {
 			// 执行依赖调用
 			List<Map<String, Object>> depList = config.getDepList();
-			List<Config> configList = handlerFactory.getHandlerByList(depList);
+			List<Config> configList = handlerFactory.getHandlerByHandlerList(depList);
 			for (int i = 0; i < configList.size(); i++) {
 				Config cfg = (Config) configList.get(i);
 				dataStore.put(cfg.getHandler().toString(), cfg);

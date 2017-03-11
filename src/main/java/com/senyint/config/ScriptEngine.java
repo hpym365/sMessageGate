@@ -1,21 +1,15 @@
 package com.senyint.config;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Scope;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.util.ScriptUtils;
 
@@ -25,12 +19,23 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 public class ScriptEngine {
 
 	@Autowired
-	Environment env;
-
-	@Autowired
 	ExecuteSql exec;
 
 	Logger logger = Logger.getLogger(this.getClass());
+
+	public Object runScriptConvertData(String scriptType, String scriptFile, String funName, Object[] params) {
+		try {
+			return this.runScriptByConfig(scriptType, scriptFile, funName, params);
+		} catch (Exception e) {
+			logger.error("当前执行脚本" + scriptFile + "执行出错，请检查文件！");
+			e.printStackTrace();
+			// throw new RuntimeException("当前执行脚本" + config.getScriptFile() +
+			// "的返回类型应为List或String(执行一条或多条sql)");
+			// e.printStackTrace();
+			return null;
+		}
+
+	}
 
 	public void runScriptExecSql(DataStore dataStore, String scriptType, String scriptFile, String funName,
 			JdbcTemplate jdbc, Object[] params) {
@@ -39,10 +44,14 @@ public class ScriptEngine {
 			if (sqlRes instanceof Collection) {
 				@SuppressWarnings("unchecked")
 				List<String> sqlList = (List<String>) sqlRes;
-
+				List<Map<String, Object>> reslist = new ArrayList<Map<String, Object>>();
 				sqlList.forEach(sql -> {
-					exec.executeSql(dataStore, jdbc, sql);
+					List<Map<String, Object>> res = exec.executeSql(dataStore, jdbc, sql);
+					if(res!=null){
+						reslist.addAll(res);
+					}
 				});
+				dataStore.addSelectList(reslist);
 			} else if (sqlRes instanceof String) {
 				String sql = (String) sqlRes;
 				exec.executeSql(dataStore, jdbc, sql);

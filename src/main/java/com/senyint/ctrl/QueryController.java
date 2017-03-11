@@ -41,7 +41,7 @@ public class QueryController {
 	ServiceFactory servFactory;
 
 	@RequestMapping("{command}")
-	public Map init(HttpServletRequest request, HttpServletResponse response,
+	public Object init(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("command") String requestCommand) throws IOException {
 		// String method = "qrsqd";// 流里获取到的传入执行哪个service
 		// 测试 地址http://localhost:8080/query/qxsqd or qrsqd
@@ -62,7 +62,7 @@ public class QueryController {
 		// System.out.println(this);
 		serv.init(dataStore);
 
-		return dataStore.getOrginData();
+		return dataStore.getResultData();
 	}
 
 }
