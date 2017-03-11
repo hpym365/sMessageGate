@@ -25,18 +25,27 @@ public class ExecuteSql {
 
 	Logger logger = Logger.getLogger(this.getClass());
 
-	public void executeSql(DataStore dataStore, JdbcTemplate jdbc, String sqlType, String sql) {
+	public void executeSql(DataStore dataStore, JdbcTemplate jdbc, String sql) {
 
-		switch (sqlType) {
-		default:
+		if (sql.startsWith("select")) {
 			dataStore.addSelectList(this.querySql(jdbc, sql));
-		case "insert":
+		} else if (sql.startsWith("insert")) {
 			this.querySql(jdbc, sql);
-		case "update":
+		} else if (sql.startsWith("update")) {
 			this.querySql(jdbc, sql);
-		case "delete":
+		} else if (sql.startsWith("delete")) {
 			this.querySql(jdbc, sql);
 		}
+		// switch (sqlType) {
+		// default:
+		//
+		// case "insert":
+		// this.querySql(jdbc, sql);
+		// case "update":
+		// this.querySql(jdbc, sql);
+		// case "delete":
+		// this.querySql(jdbc, sql);
+		// }
 
 	}
 
