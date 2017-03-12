@@ -1,10 +1,13 @@
-function test(orgin,selectlist,resultdata,tempdata){
+function test(orgin,tempdata,resultdata){
 	
 	var devname = tempdata.devname;
 	var arr=[];
-	var stuidlist = tempdata.stuidlist;
-	for(var i=0;i<stuidlist.length;i++){
-		arr[i]="select * from studyinfo where studyid='"+stuidlist[i]+"'";
+	var studentlist = tempdata.student;
+	for(var i=0;i<studentlist.length;i++){
+		var map = {};
+		map.key="studyinfo";
+		map.sql="select * from studyinfo where studyid='"+studentlist[i].get("STUID")+"'";
+		arr[i]=map;
 	}
 //	data.DiagID
 //	

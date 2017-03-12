@@ -25,7 +25,7 @@ public class DatabaseHandler extends BaseHandler implements Handler {
 	public void execute(DataStore dataStore) {
 		Config config = this.getConfig(dataStore);// 当前handler的配置
 
-		Object[] params = { dataStore.getOrginData(), dataStore.getSelectList(), dataStore.getResultData() ,dataStore.getTempData()};
+		Object[] params = { dataStore.getOrginData(), dataStore.getTempData(), dataStore.getResultData() };
 
 		engine.runScriptExecSql(dataStore, config.getScriptType(), config.getScriptFile(), config.getFunName(),
 				config.getJdbcTemplate(), params);
@@ -33,7 +33,7 @@ public class DatabaseHandler extends BaseHandler implements Handler {
 		// new Map[] { map });
 		// dataStore.getOrginData().get("DATA");
 
-		System.out.println(dataStore.getSelectList());
+		System.out.println(dataStore.getTempData());
 	}
 
 }

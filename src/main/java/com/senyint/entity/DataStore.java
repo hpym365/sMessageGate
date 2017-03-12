@@ -20,7 +20,7 @@ public class DataStore extends HashMap<String, Object> {
 
 	private Object resultData;
 	
-	private Object tempData;
+	private Map<String, List<Map<String, Object>>> tempData = new HashMap<String, List<Map<String, Object>>>();
 
 	private String streamStr;
 
@@ -35,12 +35,11 @@ public class DataStore extends HashMap<String, Object> {
 	private String encoding;
 	private String dataTag;
 	
-	
-	public Object getTempData() {
+	public Map<String, List<Map<String, Object>>> getTempData() {
 		return tempData;
 	}
 
-	public void setTempData(Object tempData) {
+	public void setTempData(Map<String, List<Map<String, Object>>> tempData) {
 		this.tempData = tempData;
 	}
 
@@ -52,18 +51,18 @@ public class DataStore extends HashMap<String, Object> {
 		this.dataTag = dataTag;
 	}
 
-	private List<List<Map<String, Object>>> selectList;
-
-	public List<List<Map<String, Object>>> getSelectList() {
-		return selectList;
-	}
-
-	public void addSelectList(List<Map<String, Object>> selectList) {
-		if (this.selectList == null)
-			this.selectList = new ArrayList<List<Map<String, Object>>>();
-
-		this.selectList.add(selectList);
-	}
+//	private List<List<Map<String, Object>>> selectList;
+//
+//	public List<List<Map<String, Object>>> getSelectList() {
+//		return selectList;
+//	}
+//
+//	public void addSelectList(List<Map<String, Object>> selectList) {
+//		if (this.selectList == null)
+//			this.selectList = new ArrayList<List<Map<String, Object>>>();
+//
+//		this.selectList.add(selectList);
+//	}
 
 	public String getEncoding() {
 		return encoding;

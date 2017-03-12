@@ -33,12 +33,12 @@ public class ConvertDataHandler extends BaseHandler implements Handler {
 	public void execute(DataStore dataStore) {
 		Config config = this.getConfig(dataStore);// 当前handler的配置
 
-		Object[] params = { dataStore.getOrginData(), dataStore.getSelectList(), dataStore.getResultData() ,dataStore.getTempData()};
-		Object result = engine.runScriptConvertData(config.getScriptType(), config.getScriptFile(),
-				config.getFunName(), params);
-		Map<String,Object> resMap = (Map<String, Object>) result;
+		Object[] params = { dataStore.getOrginData(), dataStore.getTempData(), dataStore.getResultData() };
+		Object result = engine.runScriptConvertData(config.getScriptType(), config.getScriptFile(), config.getFunName(),
+				params);
+		Map<String, Object> resMap = (Map<String, Object>) result;
 		dataStore.setResultData(resMap.get("resultData"));
-		dataStore.setTempData(resMap.get("tempData"));
+		// dataStore.setTempData(resMap.get("tempData"));
 		System.out.println("ConvertDataHandler execute");
 		// System.out.println(config);
 	}

@@ -37,24 +37,19 @@ public class ScriptEngine {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void runScriptExecSql(DataStore dataStore, String scriptType, String scriptFile, String funName,
 			JdbcTemplate jdbc, Object[] params) {
 		try {
 			Object sqlRes = this.runScriptByConfig(scriptType, scriptFile, funName, params);
 			if (sqlRes instanceof Collection) {
 				@SuppressWarnings("unchecked")
-				List<String> sqlList = (List<String>) sqlRes;
-				List<Map<String, Object>> reslist = new ArrayList<Map<String, Object>>();
-				sqlList.forEach(sql -> {
-					List<Map<String, Object>> res = exec.executeSql(dataStore, jdbc, sql);
-					if(res!=null){
-						reslist.addAll(res);
-					}
+				List<Map<String, String>> sqlList = (List<Map<String, String>>) sqlRes;
+				sqlList.forEach(sqlMap -> {
+					exec.executeSql(dataStore, jdbc,sqlMap);
 				});
-				dataStore.addSelectList(reslist);
-			} else if (sqlRes instanceof String) {
-				String sql = (String) sqlRes;
-				exec.executeSql(dataStore, jdbc, sql);
+			} else if (sqlRes instanceof Map) {
+				exec.executeSql(dataStore, jdbc,(Map<String, String>) sqlRes);
 			} else {
 				logger.error(sqlRes);
 				throw new RuntimeException("当前执行脚本" + scriptFile + "的返回类型应为List或String(执行一条或多条sql)");

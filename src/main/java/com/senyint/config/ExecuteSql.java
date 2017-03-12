@@ -15,22 +15,33 @@ public class ExecuteSql {
 
 	Logger logger = Logger.getLogger(this.getClass());
 
-	public List<Map<String, Object>> executeSql(DataStore dataStore, JdbcTemplate jdbc, String sql) {
-//		List<Map<String, Object>> reslist = new ArrayList<Map<String, Object>>();
+	public void executeSql(DataStore dataStore, JdbcTemplate jdbc, Map<String, String> sqlMap) {
+		String sql = sqlMap.get("sql");
+		logger.debug("即将要执行的sql语句:"+sql);
+		// List<Map<String, Object>> reslist = new ArrayList<Map<String,
+		// Object>>();
 		if (sql.startsWith("select")) {
-			return this.querySql(jdbc, sql);
-//			dataStore.addSelectList(this.querySql(jdbc, sql));
+			List<Map<String, Object>> res = this.querySql(jdbc, sqlMap.get("sql"));
+			if (res != null) {
+				Map<String, List<Map<String, Object>>> tempData = dataStore.getTempData();
+				// 获取指定的key
+				List<Map<String, Object>> keyList = tempData.get(sqlMap.get("key"));
+				if (keyList == null)
+					keyList = new ArrayList<Map<String, Object>>();
+				keyList.addAll(res);
+				tempData.put(sqlMap.get("key"), keyList);
+				dataStore.setTempData(tempData);
+			}
+			// dataStore.addSelectList(this.querySql(jdbc, sql));
 		} else if (sql.startsWith("insert")) {
 			this.executeSql(jdbc, sql);
-			return null;
 		} else if (sql.startsWith("update")) {
 			this.executeSql(jdbc, sql);
-			return null;
 		} else if (sql.startsWith("delete")) {
 			this.executeSql(jdbc, sql);
-			return null;
+		} else {
+			throw new RuntimeException("sql语句错误 请检查拼的sql，不是select insert update delete开头的");
 		}
-		throw new RuntimeException("sql语句错误 请检查拼的sql，不是select insert update delete开头的");
 
 		// switch (sqlType) {
 		// default:

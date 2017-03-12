@@ -5,13 +5,13 @@
 //println map.getAt("java")
 //return "The End"
 
-def convert(orgin,selectlist,result,temp) {
+def convert(orgin,tempData,resultData) {
 	def returnparam = [:];
-	def tempData = [:];
+	def tempDataInit = [:];
 	def stuidlist = [];
 	def devname = orgin.get("DeviceTypeName");
 
-	def dyclist = selectlist[0];//第一次放进去的list
+	def studentlist = tempData.getAt("student");//第一次放进去的list
 //	for(int i=0;i<selectlist.size;i++){
 //		def teplist = selectlist[i];
 //		for(int j=0;j<teplist.size;j++){
@@ -20,13 +20,13 @@ def convert(orgin,selectlist,result,temp) {
 //			println "123123"
 //		}
 //	}
-	for(int i=0;i<dyclist.size;i++){
-			def xeguid = dyclist[i].get("STUID");
+	for(int i=0;i<studentlist.size;i++){
+			def xeguid = studentlist[i].get("STUID");
 			stuidlist.add(xeguid);
 			println "123123"
 	}
-	tempData.put("stuidlist",stuidlist);
-	tempData.put("devname",devname);
-	returnparam.put("tempData",tempData);
+	tempDataInit.put("stuidlist",stuidlist);
+	tempDataInit.put("devname",devname);
+	returnparam.put("tempData",tempDataInit);
 	return returnparam
 }
