@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<person>
+	<name th:text="${name}"></name>
+	<age th:text="${age}"></age>
+	<obj th:attr="value1=${obj.value1}"></obj>
+	<obj th:attr="value2=${obj.value2}"></obj>
+	<class>
+		<student th:each="stu : ${stus}" th:name="${stu.name}" name="xiaoming" />
+	</class>
+    
+    Today is: <span th:text="${#calendars.format(today,'dd-MM-yyyy')}">13 May 2011</span>
+    
+    {id:"[(${name})]"}
+    
+    {id:"[[${name}]]"}
+    
+    {id:"[# th:utext="${name}"/]"}
+    {id:"[# th:text="${name}"/]"}
+    
+    {id:[{name:"[(${name})]"},{name:"[(${name})]"}]}
+    
+    [(${name})]
+</person>

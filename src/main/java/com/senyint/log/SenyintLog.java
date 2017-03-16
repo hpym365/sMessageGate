@@ -51,6 +51,24 @@ public class SenyintLog {
 		// }
 	}
 	
+	
+	public static void error(Exception e) {
+		StackTraceElement[] stackTrace = e.getStackTrace();
+		List<StackTraceElement> senyintList = new ArrayList<StackTraceElement>();
+
+		String nav = "";
+		for (StackTraceElement iteam : stackTrace) {
+			if (iteam.getClassName().startsWith("com.senyint") && iteam.getLineNumber() > 0) {
+				senyintList.add(iteam);
+				nav = nav + "->" + iteam.getClassName() + ":" + iteam.getMethodName() + ":" + iteam.getLineNumber();
+			}
+		}
+
+		logs.logger.error("[ERROR]:错误位置:" + nav);
+		logs.logger.error("[ERROR]:异常信息:" + e.getMessage());
+
+		throw new CustomExcpetion("500", "程序执行错误请联系管理员");
+	}
 	public static void debug(String message) {
 
 		
