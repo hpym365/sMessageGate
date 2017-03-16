@@ -1,24 +1,20 @@
 package com.senyint.handler.impl;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
-import com.senyint.util.CloneUtils;
+import com.senyint.log.SenyintLog;
 
 @Component("RECIVESTREAM")
 public class ReciveStreamHandler extends BaseHandler implements Handler {
@@ -36,7 +32,16 @@ public class ReciveStreamHandler extends BaseHandler implements Handler {
 		}
 		dataStore.setStreamStr(streamStr);
 
-		String streamType = this.getStreamType(dataStore);
+		String streamType = "";
+
+		SenyintLog.debug("123123");
+		try{
+			streamType = this.getStreamType(dataStore);
+		}catch(Exception e){
+			SenyintLog.error(e,"005","测试");
+//			throw new RuntimeException("streamType转换错误");
+		}
+		System.out.println("继续执行了");
 		if (streamType == null)
 			throw new RuntimeException("流文件类型检查失败  只支持 xml json");
 

@@ -1,6 +1,9 @@
 package com.senyint.exception;
 
-public class CustomExcpetion extends Exception {
+import java.util.HashMap;
+import java.util.Map;
+
+public class CustomExcpetion extends RuntimeException {
 
 	/**
 	 * 
@@ -12,7 +15,16 @@ public class CustomExcpetion extends Exception {
 	
 	private String errorMes;
 	
-	public CustomExcpetion(String errorCode){
-		super(errorCode);
+	public CustomExcpetion(String errorCode,String errorMes){
+		super(errorMes);
+		this.errorCode=errorCode;
+		this.errorMes=errorMes;
+	}
+	
+	public Map<String,String> getException(){
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("errorCode", errorCode);
+		map.put("errorMes", errorMes);
+		return map;
 	}
 }
