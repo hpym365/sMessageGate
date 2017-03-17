@@ -13,9 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.senyint.component.TemplateConvertComponent;
 import com.senyint.serv.ServiceFactory;
-import com.senyint.util.TemplateConvertUtils;
-import com.senyint.util.component.TemplateConvertComponent;
 
 /**
  * @author hpym365
@@ -29,9 +28,6 @@ public class TestController {
 
 	@Autowired
 	ServiceFactory servFactory;
-
-	@Value("${src}")
-	public String s;
 
 	@RequestMapping("/")
 	public Object init() {
@@ -71,7 +67,6 @@ public class TestController {
 
 		data.put("today", Calendar.getInstance());
 		TemplateConvertComponent.convertMapByTemplate("person.xml", data);
-		System.out.println(s);
 		// String method = "qrsqd";// 流里获取到的传入执行哪个service
 		// 测试 地址http://localhost:8080/query/qxsqd or qrsqd
 		// 见配置application.properties

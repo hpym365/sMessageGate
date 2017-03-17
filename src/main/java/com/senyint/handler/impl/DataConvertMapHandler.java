@@ -22,7 +22,7 @@ public class DataConvertMapHandler extends BaseHandler implements Handler {
 	Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
-	public String execute(DataStore dataStore) {
+	public void execute(DataStore dataStore) {
 //		Config config = this.getConfig(dataStore);// 当前handler的配置
 		// TODO Auto-generated method stub
 		try {
@@ -31,7 +31,6 @@ public class DataConvertMapHandler extends BaseHandler implements Handler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
 
 	}
 

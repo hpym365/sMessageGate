@@ -24,7 +24,7 @@ import com.senyint.util.YamlUtil;
  * @author hpym365
  * @version 创建时间：2017年2月28日 上午1:31:22 类说明
  */
-@Controller
+@RestController
 @RequestMapping("/query")
 public class QueryController {
 
@@ -58,7 +58,7 @@ public class QueryController {
 		}catch(CustomExcpetion e){
 			Map<String, String> exception = e.getException();
 			map.addAllAttributes(exception);
-			return "error";
+			return exception;
 		}
 
 		return dataStore.getResultData();

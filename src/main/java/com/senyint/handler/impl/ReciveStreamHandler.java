@@ -47,6 +47,7 @@ public class ReciveStreamHandler extends BaseHandler implements Handler {
 
 		dataStore.setStreamType(streamType);
 		System.out.println("ReciveStreamHandler execute");
+//		return streamType;
 	}
 
 	public String reciveStream(DataStore dataStore) throws IOException {

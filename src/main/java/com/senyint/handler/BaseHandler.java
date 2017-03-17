@@ -24,7 +24,8 @@ public class BaseHandler implements Handler {
 		String handlerConfig = config.getHandlerConfig();
 
 		// 如果有db配置 和js的配置 那么读取 dbhandler才读取这些
-		if (config.getHandlerConfig() != null && (config.getHandler() instanceof DatabaseHandler || config.getHandler() instanceof ConvertDataHandler)) {
+//		if (config.getHandlerConfig() != null && (config.getHandler() instanceof DatabaseHandler
+//				|| config.getHandler() instanceof ConvertDataHandler)) {
 
 			// 读取配置增删查改? 脚本类型 数据源等
 			String sqlType = PropertiesUtils.getProperties(handlerConfig + ".sqlType");
@@ -42,16 +43,13 @@ public class BaseHandler implements Handler {
 			JdbcTemplate jdbcTemplate = dds.getJdbcTemplate(config.getDataSource());
 
 			config.setJdbcTemplate(jdbcTemplate);
-		}
-
+//		}
+		
 		return config;
 	}
 
 	@Override
-	public String execute(DataStore dataStore) {
-		// TODO Auto-generated method stub
+	public void execute(DataStore dataStore) {
 	}
-	
-	
 
 }

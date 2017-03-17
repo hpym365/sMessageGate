@@ -16,10 +16,19 @@ public class DataStore extends HashMap<String, Object> {
 
 	private String name;
 
-	private Map<String, Object> orginData;
+	private Map<String, Object> orginData = new HashMap<String, Object>();
+	private Map<String, String> tempStringData = new HashMap<String, String>();
+
+	public Map<String, String> getTempStringData() {
+		return tempStringData;
+	}
+
+	public void setTempStringData(Map<String, String> tempStringData) {
+		this.tempStringData = tempStringData;
+	}
 
 	private Object resultData;
-	
+
 	private Map<String, List<Map<String, Object>>> tempData = new HashMap<String, List<Map<String, Object>>>();
 
 	private String streamStr;
@@ -34,7 +43,7 @@ public class DataStore extends HashMap<String, Object> {
 
 	private String encoding;
 	private String dataTag;
-	
+
 	public Map<String, List<Map<String, Object>>> getTempData() {
 		return tempData;
 	}
@@ -51,18 +60,18 @@ public class DataStore extends HashMap<String, Object> {
 		this.dataTag = dataTag;
 	}
 
-//	private List<List<Map<String, Object>>> selectList;
-//
-//	public List<List<Map<String, Object>>> getSelectList() {
-//		return selectList;
-//	}
-//
-//	public void addSelectList(List<Map<String, Object>> selectList) {
-//		if (this.selectList == null)
-//			this.selectList = new ArrayList<List<Map<String, Object>>>();
-//
-//		this.selectList.add(selectList);
-//	}
+	// private List<List<Map<String, Object>>> selectList;
+	//
+	// public List<List<Map<String, Object>>> getSelectList() {
+	// return selectList;
+	// }
+	//
+	// public void addSelectList(List<Map<String, Object>> selectList) {
+	// if (this.selectList == null)
+	// this.selectList = new ArrayList<List<Map<String, Object>>>();
+	//
+	// this.selectList.add(selectList);
+	// }
 
 	public String getEncoding() {
 		return encoding;
@@ -119,7 +128,6 @@ public class DataStore extends HashMap<String, Object> {
 	public void setOrginData(Map<String, Object> orginData) {
 		this.orginData = orginData;
 	}
-
 
 	public Object getResultData() {
 		return resultData;

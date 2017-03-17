@@ -9,42 +9,55 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.senyint.entity.Config;
+import com.senyint.entity.DataStore;
+import com.senyint.handler.impl.BranchHandler;
+import com.senyint.log.SenyintLog;
 import com.senyint.util.JsonUtil;
 import com.senyint.util.PropertiesUtils;
 
 @Component
 public class HandlerFactory {
 
-
 	@Autowired
 	ApplicationContext app;
+
+	public void executeHandlerList(List<Config> handlerList, DataStore dataStore) {
+		for (int i = 0; i < handlerList.size(); i++) {
+			Config cfg = handlerList.get(i);
+			dataStore.put(cfg.getHandler().toString(), cfg);
+			cfg.getHandler().getClass().getName();
+			cfg.getHandler().execute(dataStore);
+
+			if (cfg.getHandler() instanceof BranchHandler) {
+				// 执行分支
+
+			}
+
+			if ("true".equals(dataStore.getTempStringData().get("break"))) {
+				break;
+			}
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Config> getHandler(String methodName) {
 
-		String handlerStr = PropertiesUtils.getProperties(methodName + ".serv.handlerlist");
-		if (handlerStr == null)
+		String handlerListStr = PropertiesUtils.getProperties(methodName + ".serv.handlerlist");
+		if (handlerListStr == null)
 			throw new RuntimeException("请检查配置文件:未配置" + methodName + ".serv.handlerlist");
 
-//		String[] handlerArr = null;
-//		try {
-//			handlerArr = handlerStr.split(",");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			throw new RuntimeException(
-//					methodName + ".serv.handlerlist:配置转换数组错误,配置样例qrsqd.serv.list=getdata,conVerTData。Tip:不区分大小写");
-//		}
+		// String[] handlerArr = null;
+		// try {
+		// handlerArr = handlerStr.split(",");
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// throw new RuntimeException(
+		// methodName +
+		// ".serv.handlerlist:配置转换数组错误,配置样例qrsqd.serv.list=getdata,conVerTData。Tip:不区分大小写");
+		// }
 
-		Map<String,Object> map = null;
-		try {
-			map = JsonUtil.json2Map(handlerStr);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(map);
-
-		List<Map<String,Object>> handlerlist = (List<Map<String, Object>>) map.get("hanlderlist");
+		List<Map<String, Object>> handlerList = this.convertJsonToList(handlerListStr);
+		System.out.println(handlerList);
 
 		// for (int i = 0; i < handlerArr.length; i++) {
 		// Map configMap;
@@ -106,34 +119,52 @@ public class HandlerFactory {
 		// handlerInstanceList.add(handler);
 		// });
 		// handlerArr
-		return getHandlerByHandlerList(handlerlist);
+		return getHandlerListByList(handlerList);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Config> getHandlerByHandlerList(List<Map<String,Object>> handlerlist) {
+	public List<Map<String, Object>> convertJsonToList(String handlerListStr) {
+		List<Map<String, Object>> handlerList = null;
+		try {
+			// map = JsonUtil.json2Map(handlerStr);
+			handlerList = JsonUtil.jsonToObject(handlerListStr, List.class);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			SenyintLog.error(e);
+		}
+		return handlerList;
+	}
+
+	public List<Config> getHandlerListByList(List<Map<String, Object>> handlerlist) {
+
 		List<Config> handlerInstanceList = new ArrayList<Config>();
 
 		for (int i = 0; i < handlerlist.size(); i++) {
 			Config cfg = this.getHandlerBaseConfig(handlerlist.get(i));
 			handlerInstanceList.add(cfg);
 		}
-		
+
 		return handlerInstanceList;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public Config getHandlerBaseConfig(Map<String,Object> config){
+	public Config getHandlerBaseConfig(Map<String, Object> config) {
 		Config cfg = new Config();
 		String handlerName = (String) config.get("handler");
 		String handlerConfig = (String) config.get("config");
-		List<Map<String,Object>> depList = (List<Map<String,Object>>) config.get("dep");
+		List<Map<String, Object>> depList = (List<Map<String, Object>>) config.get("dep");
 
-//		System.out.println(handlerName);
-		Handler handler = (Handler) app.getBean(handlerName.toUpperCase());
+		// System.out.println(handlerName);
+		Handler handler = null;
+		try {
+			handler = (Handler) app.getBean(handlerName.toUpperCase());
+		} catch (Exception e) {
+			SenyintLog.error(e);
+		}
 		cfg.setHandler(handler);
 		cfg.setHandlerConfig(handlerConfig);
 		cfg.setDepList(depList);
-//		cfg.setIndex(i);
+		// cfg.setIndex(i);
 		return cfg;
 	}
 }

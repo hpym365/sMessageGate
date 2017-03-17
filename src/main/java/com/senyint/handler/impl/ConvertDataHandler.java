@@ -30,7 +30,7 @@ public class ConvertDataHandler extends BaseHandler implements Handler {
 	// }
 
 	@SuppressWarnings("unused")
-	public String execute(DataStore dataStore) {
+	public void execute(DataStore dataStore) {
 		Config config = this.getConfig(dataStore);// 当前handler的配置
 
 		Object[] params = { dataStore.getOrginData(), dataStore.getTempData(), dataStore.getResultData() };
@@ -41,6 +41,5 @@ public class ConvertDataHandler extends BaseHandler implements Handler {
 		// dataStore.setTempData(resMap.get("tempData"));
 		System.out.println("ConvertDataHandler execute");
 		// System.out.println(config);
-		return "";
 	}
 }
