@@ -1,6 +1,5 @@
-package com.senyint.config;
+package com.senyint.component;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +14,7 @@ import com.senyint.util.ScriptUtils;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
+@SuppressWarnings("restriction")
 @Component
 public class ScriptEngine {
 
@@ -43,13 +43,12 @@ public class ScriptEngine {
 		try {
 			Object sqlRes = this.runScriptByConfig(scriptType, scriptFile, funName, params);
 			if (sqlRes instanceof Collection) {
-				@SuppressWarnings("unchecked")
 				List<Map<String, String>> sqlList = (List<Map<String, String>>) sqlRes;
 				sqlList.forEach(sqlMap -> {
-					exec.executeSql(dataStore, jdbc,sqlMap);
+					exec.executeSql(dataStore, jdbc, sqlMap);
 				});
 			} else if (sqlRes instanceof Map) {
-				exec.executeSql(dataStore, jdbc,(Map<String, String>) sqlRes);
+				exec.executeSql(dataStore, jdbc, (Map<String, String>) sqlRes);
 			} else {
 				logger.error(sqlRes);
 				throw new RuntimeException("当前执行脚本" + scriptFile + "的返回类型应为List或String(执行一条或多条sql)");
@@ -73,7 +72,8 @@ public class ScriptEngine {
 			throw new RuntimeException("scriptType类型错误");
 		}
 		if (res instanceof ScriptObjectMirror) {
-			return ((ScriptObjectMirror) res).values();
+			ScriptObjectMirror scriptObjectMirror = (ScriptObjectMirror) res;
+			return scriptObjectMirror.values();
 		}
 
 		return res;

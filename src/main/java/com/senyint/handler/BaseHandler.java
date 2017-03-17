@@ -3,7 +3,7 @@ package com.senyint.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.senyint.config.DynamicDataSource;
+import com.senyint.component.DynamicDataSource;
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.impl.ConvertDataHandler;
@@ -48,7 +48,7 @@ public class BaseHandler implements Handler {
 	}
 
 	@Override
-	public void execute(DataStore dataStore) {
+	public String execute(DataStore dataStore) {
 		// TODO Auto-generated method stub
 	}
 	

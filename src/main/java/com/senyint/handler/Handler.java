@@ -4,5 +4,5 @@ import com.senyint.entity.DataStore;
 
 public interface Handler {
 
-	void execute(DataStore dataStore);
+	public String execute(DataStore dataStore);
 }

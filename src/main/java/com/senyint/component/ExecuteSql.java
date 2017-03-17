@@ -1,4 +1,4 @@
-package com.senyint.config;
+package com.senyint.component;
 
 import java.util.ArrayList;
 import java.util.List;

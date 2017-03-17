@@ -12,9 +12,14 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
+import com.senyint.entity.SystemConstants;
+
 public class TemplateConvertUtils {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
+
+		String str = SystemConstants.XML_JSON_TEMPLATE_SRC;
 		Map data = new HashMap();
 
 		Map obj = new HashMap();
@@ -49,17 +54,18 @@ public class TemplateConvertUtils {
 		data.put("today", dateFormat.format(cal.getTime()));
 
 		data.put("today", Calendar.getInstance());
-		String s = TemplateConvertUtils.convertMapByTemplate("person.xml", data);
+		String s = TemplateConvertUtils.convertMapByTemplate("src/main/resources/template/", "person.xml", data);
 		System.out.println(s);
 	}
 
-	public static String convertMapByTemplate(String templateFileName, Map data) {//
+	public static String convertMapByTemplate(String xmlJosnTemlateSrc, String templateFileName,
+			Map<String, Object> data) {//
 		Locale locale = Locale.getDefault();
 
 		FileTemplateResolver templateResolver = new FileTemplateResolver();
 		// templateResolver.setTemplateMode("XML");
 		// templateResolver.setPrefix("C:\\Users\\ludz\\Desktop\\pdfs");
-		templateResolver.setPrefix("src/main/resources/template/");
+		templateResolver.setPrefix(xmlJosnTemlateSrc);
 		// templateResolver.setSuffix(".xml");
 		templateResolver.setCacheTTLMs(3600000L);
 		// templateResolver.setCharacterEncoding("utf-8");

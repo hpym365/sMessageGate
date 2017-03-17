@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.senyint.config.ScriptEngine;
+import com.senyint.component.ScriptEngine;
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
@@ -30,7 +30,7 @@ public class ConvertDataHandler extends BaseHandler implements Handler {
 	// }
 
 	@SuppressWarnings("unused")
-	public void execute(DataStore dataStore) {
+	public String execute(DataStore dataStore) {
 		Config config = this.getConfig(dataStore);// 当前handler的配置
 
 		Object[] params = { dataStore.getOrginData(), dataStore.getTempData(), dataStore.getResultData() };
@@ -41,5 +41,6 @@ public class ConvertDataHandler extends BaseHandler implements Handler {
 		// dataStore.setTempData(resMap.get("tempData"));
 		System.out.println("ConvertDataHandler execute");
 		// System.out.println(config);
+		return "";
 	}
 }

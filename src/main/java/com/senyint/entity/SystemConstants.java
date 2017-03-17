@@ -1,10 +1,16 @@
 package com.senyint.entity;
 
-public final class SystemConstants {
-	
-	private SystemConstants() {
-	}
+import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class SystemConstants {
+	
+	
+	public static String XML_JSON_TEMPLATE_SRC;
+	
 	public final static String HANDLER_EXECUTE_NAV_CONFIG = "HANDLER_EXECUTE_NAV_CONFIG";
 
 	public final static String HANDLER_HTTP_REQUEST = "HANDLER_HTTP_REQUEST";
@@ -61,4 +67,8 @@ public final class SystemConstants {
     
     /**存储过程错误*/
     public final static String SQL_PROCEDURE_ERROR = "17";
+    
+    
+    private SystemConstants() {
+	}
 }

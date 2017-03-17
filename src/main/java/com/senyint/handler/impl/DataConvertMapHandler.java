@@ -1,12 +1,6 @@
 package com.senyint.handler.impl;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -15,7 +9,6 @@ import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 import org.springframework.stereotype.Component;
 
-import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
@@ -23,14 +16,14 @@ import com.senyint.util.MapUtil;
 
 /*
  */
-@Component("STREAMCONVERT")
-public class StreamConver extends BaseHandler implements Handler {
+@Component("DATACONVERTMAP")
+public class DataConvertMapHandler extends BaseHandler implements Handler {
 
 	Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
-	public void execute(DataStore dataStore) {
-		Config config = this.getConfig(dataStore);// 当前handler的配置
+	public String execute(DataStore dataStore) {
+//		Config config = this.getConfig(dataStore);// 当前handler的配置
 		// TODO Auto-generated method stub
 		try {
 			this.convertXmlToMap(dataStore, dataStore.getDataTag());
@@ -38,6 +31,7 @@ public class StreamConver extends BaseHandler implements Handler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 
 	}
 

@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.senyint.config.ScriptEngine;
+import com.senyint.component.ScriptEngine;
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
@@ -22,7 +22,7 @@ public class DatabaseHandler extends BaseHandler implements Handler {
 
 	@Override
 	// @Autowired
-	public void execute(DataStore dataStore) {
+	public String execute(DataStore dataStore) {
 		Config config = this.getConfig(dataStore);// 当前handler的配置
 
 		Object[] params = { dataStore.getOrginData(), dataStore.getTempData(), dataStore.getResultData() };
@@ -34,6 +34,7 @@ public class DatabaseHandler extends BaseHandler implements Handler {
 		// dataStore.getOrginData().get("DATA");
 
 		System.out.println(dataStore.getTempData());
+		return "";
 	}
 
 }
