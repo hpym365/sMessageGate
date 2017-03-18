@@ -124,8 +124,12 @@ public class HandlerFactory {
 
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> convertJsonToList(String handlerListStr) {
+		
 		List<Map<String, Object>> handlerList = null;
 		try {
+			while(!handlerListStr.startsWith("[")){//不是list的话 就找对应的值
+				handlerListStr = PropertiesUtils.getProperties(handlerListStr); 
+			}
 			// map = JsonUtil.json2Map(handlerStr);
 			handlerList = JsonUtil.jsonToObject(handlerListStr, List.class);
 		} catch (Exception e) {
