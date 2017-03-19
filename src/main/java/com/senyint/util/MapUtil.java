@@ -17,8 +17,8 @@ import org.dom4j.QName;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class MapUtil {
-	@SuppressWarnings("rawtypes")
 	public static Map xml2map(String xmlString) throws DocumentException {
 		Document doc = DocumentHelper.parseText(xmlString);
 		Element rootElement = doc.getRootElement();
@@ -32,7 +32,6 @@ public class MapUtil {
 		return map;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	static void ele2map(Map map, Element ele) {
 		System.out.println(ele);
 		// 获得当前节点的子节点
@@ -75,7 +74,6 @@ public class MapUtil {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Map<String, Object> json2Map(String jsonStr) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 最外层解析
@@ -98,7 +96,6 @@ public class MapUtil {
 		return map;
 	}
 
-	@SuppressWarnings("rawtypes")
 	public static Map<String, Object> xml2Map(String xmlstr) throws DocumentException {
 		Document doc = DocumentHelper.parseText(xmlstr);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -116,7 +113,6 @@ public class MapUtil {
 		return map;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Map<String, Object> Dom2Map(Element e) {
 		Map map = new HashMap();
 		List list = e.elements();
@@ -236,7 +232,6 @@ public class MapUtil {
 	// return map;
 	// }
 
-	@SuppressWarnings("rawtypes")
 	public Map<String, Object> xmlTemplate2Map(String in, Map frommap) throws DocumentException {
 		Document doc = DocumentHelper.parseText(in);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -282,7 +277,6 @@ public class MapUtil {
 		return map;
 	}
 
-	@SuppressWarnings("rawtypes")
 	public Object getMapValueByKeys(Map map, String t[]) {// 根据persons.person获取对应的值
 		HashMap tmap = CloneUtils.clone((HashMap) map);
 		// tmap.putAll(map);//克隆一个 要不总改变原来的
@@ -316,7 +310,6 @@ public class MapUtil {
 	}
 
 	// from map 原map 就是传入的
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Map templateDom2Map(Element e, Map frommap) {
 		Map map = new HashMap();
 		List list = e.elements();
@@ -395,10 +388,8 @@ public class MapUtil {
 	// 把list里的map的key值根据传入的新旧key做更改
 	// files = name=xm,age=nl
 	// list 要处理的list
-	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
 	public static List mappedListNewKey(List list, String files) {
 		String keys[] = files.split(",");
-		Object obj = null;
 		List resList = new ArrayList();
 		if (list != null && list.size() > 0) {
 			for (int i = 0; i < list.size(); i++) {

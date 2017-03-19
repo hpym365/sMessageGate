@@ -10,7 +10,13 @@ import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
 
-/*
+/**
+ * 
+ * @ClassName: DatabaseHandler
+ * @Description: 数据库操作Handler
+ * @author hpym365@gmail.com
+ * @date 2017年3月19日 下午9:30:51
+ * @version V1.0
  */
 @Component("DATABASE")
 public class DatabaseHandler extends BaseHandler implements Handler {

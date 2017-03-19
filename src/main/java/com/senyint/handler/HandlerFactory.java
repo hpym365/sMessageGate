@@ -5,21 +5,34 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.impl.BranchHandler;
 import com.senyint.log.SenyintLog;
+import com.senyint.util.ConfigKeyUtils;
 import com.senyint.util.JsonUtil;
 import com.senyint.util.PropertiesUtils;
 
 @Component
+@ConfigurationProperties(prefix = "my")
 public class HandlerFactory {
 
 	@Autowired
 	ApplicationContext app;
+
+	@Autowired
+	Environment env;
+
+	private List<String> servers = new ArrayList<String>();
+
+	public List<String> getServers() {
+		return this.servers;
+	}
 
 	public void executeHandlerList(List<Config> handlerList, DataStore dataStore) {
 		for (int i = 0; i < handlerList.size(); i++) {
@@ -40,11 +53,14 @@ public class HandlerFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Config> getHandler(String methodName) {
+	public List<Config> getHandler(DataStore dataStore) {
 
-		String handlerListStr = PropertiesUtils.getProperties(methodName + ".serv.handlerlist");
-		if (handlerListStr == null)
-			throw new RuntimeException("请检查配置文件:未配置" + methodName + ".serv.handlerlist");
+		List<Map<String, Object>> handlerList = (List<Map<String, Object>>) dataStore
+				.getYaml(ConfigKeyUtils.getServiceHandlerList(dataStore.getRequestCommand()));
+		// String handlerListStr =
+		// PropertiesUtils.getProperties("task."+methodName + ".handlerlist");
+		if (handlerList == null)
+			throw new RuntimeException("请检查配置文件:未配置" + dataStore.getRequestCommand() + ".serv.handlerlist");
 
 		// String[] handlerArr = null;
 		// try {
@@ -56,8 +72,9 @@ public class HandlerFactory {
 		// ".serv.handlerlist:配置转换数组错误,配置样例qrsqd.serv.list=getdata,conVerTData。Tip:不区分大小写");
 		// }
 
-		List<Map<String, Object>> handlerList = this.convertJsonToList(handlerListStr);
-		System.out.println(handlerList);
+		// List<Map<String, Object>> handlerList =
+		// this.convertJsonToList(handlerListStr);
+		// System.out.println(handlerList);
 
 		// for (int i = 0; i < handlerArr.length; i++) {
 		// Map configMap;
@@ -124,11 +141,11 @@ public class HandlerFactory {
 
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> convertJsonToList(String handlerListStr) {
-		
+
 		List<Map<String, Object>> handlerList = null;
 		try {
-			while(!handlerListStr.startsWith("[")){//不是list的话 就找对应的值
-				handlerListStr = PropertiesUtils.getProperties(handlerListStr); 
+			while (!handlerListStr.startsWith("[")) {// 不是list的话 就找对应的值
+				handlerListStr = PropertiesUtils.getProperties(handlerListStr);
 			}
 			// map = JsonUtil.json2Map(handlerStr);
 			handlerList = JsonUtil.jsonToObject(handlerListStr, List.class);
@@ -170,5 +187,15 @@ public class HandlerFactory {
 		cfg.setDepList(depList);
 		// cfg.setIndex(i);
 		return cfg;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getHandlerList(DataStore dataStore, Object handlerObj) {
+
+		while (handlerObj instanceof String) {
+			handlerObj = dataStore.getYaml(ConfigKeyUtils.getHandlerListConfigName((String) handlerObj));
+		}
+
+		return (List<Map<String, Object>>) handlerObj;
 	}
 }

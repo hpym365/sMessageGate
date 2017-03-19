@@ -23,6 +23,15 @@ public class Config {
 	private String scriptFile;
 	private String funName;
 	private String dataTag;
+	private String templateFileName;
+
+	public String getTemplateFileName() {
+		return templateFileName;
+	}
+
+	public void setTemplateFileName(String templateFileName) {
+		this.templateFileName = templateFileName;
+	}
 
 	public String getDataTag() {
 		return dataTag;

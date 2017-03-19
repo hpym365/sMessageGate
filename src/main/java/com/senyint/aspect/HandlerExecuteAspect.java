@@ -34,7 +34,6 @@ public class HandlerExecuteAspect {
 	 * @param map
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@Around(value = "handlerExecutePointcut(dataStore)")
 	public void beforeHandlerExecuteDo(ProceedingJoinPoint joinpoint, DataStore dataStore) throws Throwable {
 		Config config = (Config) dataStore.get(joinpoint.getTarget().toString());

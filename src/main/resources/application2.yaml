@@ -1,0 +1,90 @@
+#my:
+#  port: 9999
+#  c: 
+#    - a: 123
+#  qq:
+#    - a: kk
+#  icq: abc
+#  zz: 
+#    - a
+#    - b
+
+my:
+   servers:
+       - dev.bar.com
+       - foo.bar.com
+       
+logging:
+  level:
+    com: 
+      senyint: DEBUG
+
+script: 
+  groovyPath: groovy\\
+  javascriptPath: javascript\\
+  
+datasource:
+  testa:
+    url: jdbc:oracle:thin:@59.44.27.126:1521:orcl
+    driver: oracle.jdbc.driver.OracleDriver
+    username: test
+    password: test
+  testc:
+    url: jdbc:oracle:thin:@59.44.27.126:1521:orcl
+    driver: oracle.jdbc.driver.OracleDriver
+    username: nmis
+    password: nmis
+
+spring: 
+  datasource: 
+    url: jdbc:oracle:thin:@172.16.180.113:1521:orcl
+    username: test
+    password: test
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+
+xmlandjson:
+  template:
+    src: src/main/resources/template/
+haha: [a,b]
+hahaa: a,b
+hahab: {a: "123"}
+zscs: 
+  encodinga: utf-8
+  dataTag: DATA
+  serv: cancel
+  handlerlist: 
+    - {"handler":"recivestream","config":"recivestream"}
+    - {"handler":"DATACONVERTMAP","config":"recivestream"}
+
+convert: 
+  scriptFile: convert.groovy
+  scriptType: groovy
+  funName: convert
+
+convert1: 
+  scriptFile: convert1.groovy
+  scriptType: groovy
+  funName: convert
+
+cxb: 
+  scriptFile: cxa.js
+  dataSource: testa
+  scriptType: javascript
+  funName: test
+
+cxc: 
+  scriptFile: cxc.js
+  dataSource: testc
+  scriptType: javascript
+  funName: test
+
+if: 
+  scriptFile: if.js
+  scriptType: javascript
+  funName: test
+
+branch: 
+  01: getdataalist
+  02: [{"handler":"getdatab","config":"b"},{"handler":"getdataa","config":"a"}]
+  
+getdataalist: [{"handler":"getdataA","config":"b"},{"handler":"getdatab","config":"a"}]

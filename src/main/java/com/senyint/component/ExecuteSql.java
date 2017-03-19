@@ -15,6 +15,7 @@ public class ExecuteSql {
 
 	Logger logger = Logger.getLogger(this.getClass());
 
+	@SuppressWarnings("unchecked")
 	public void executeSql(DataStore dataStore, JdbcTemplate jdbc, Map<String, String> sqlMap) {
 		String sql = sqlMap.get("sql");
 		logger.debug("即将要执行的sql语句:"+sql);
@@ -23,9 +24,9 @@ public class ExecuteSql {
 		if (sql.startsWith("select")) {
 			List<Map<String, Object>> res = this.querySql(jdbc, sqlMap.get("sql"));
 			if (res != null) {
-				Map<String, List<Map<String, Object>>> tempData = dataStore.getTempData();
+				Map<String,Object> tempData = dataStore.getTempData();
 				// 获取指定的key
-				List<Map<String, Object>> keyList = tempData.get(sqlMap.get("key"));
+				List<Map<String, Object>> keyList = (List<Map<String, Object>>) tempData.get(sqlMap.get("key"));
 				if (keyList == null)
 					keyList = new ArrayList<Map<String, Object>>();
 				keyList.addAll(res);

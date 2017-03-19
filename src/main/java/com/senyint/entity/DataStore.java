@@ -1,6 +1,5 @@
 package com.senyint.entity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class DataStore extends HashMap<String, Object> {
 
 	private Object resultData;
 
-	private Map<String, List<Map<String, Object>>> tempData = new HashMap<String, List<Map<String, Object>>>();
+	private Map<String, Object> tempData = new HashMap<String, Object>();
 
 	private String streamStr;
 
@@ -41,14 +40,47 @@ public class DataStore extends HashMap<String, Object> {
 
 	private String streamType;
 
-	private String encoding;
+	private String encode;
 	private String dataTag;
 
-	public Map<String, List<Map<String, Object>>> getTempData() {
+	private Object outResult;
+
+	public Object getOutResult() {
+		return outResult;
+	}
+
+	public void setOutResult(Object outResult) {
+		this.outResult = outResult;
+	}
+
+	private Map<String, Object> yaml;
+
+	public Map<String, Object> getYaml() {
+		return yaml;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public Object getYaml(String key) {
+		String[] pre = key.split("\\.");
+		System.out.println(key);
+		Object temp = yaml;
+		for (int i = 0; i < pre.length; i++) {
+			temp = ((Map) temp).get(pre[i]);
+			if (temp == null)
+				return null;
+		}
+		return temp;
+	}
+
+	public void setYaml(Map<String, Object> yaml) {
+		this.yaml = yaml;
+	}
+
+	public Map<String, Object> getTempData() {
 		return tempData;
 	}
 
-	public void setTempData(Map<String, List<Map<String, Object>>> tempData) {
+	public void setTempData(Map<String, Object> tempData) {
 		this.tempData = tempData;
 	}
 
@@ -73,12 +105,14 @@ public class DataStore extends HashMap<String, Object> {
 	// this.selectList.add(selectList);
 	// }
 
-	public String getEncoding() {
-		return encoding;
+	public String getEncode() {
+		if (encode == null)
+			return "UTF-8";
+		return encode;
 	}
 
-	public void setEncoding(String encoding) {
-		this.encoding = encoding;
+	public void setEncode(String encode) {
+		this.encode = encode;
 	}
 
 	public String getStreamStr() {

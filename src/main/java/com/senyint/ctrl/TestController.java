@@ -9,11 +9,10 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.senyint.component.TemplateConvertComponent;
+import com.senyint.component.TemplateConvert;
 import com.senyint.serv.ServiceFactory;
 
 /**
@@ -29,6 +28,7 @@ public class TestController {
 	@Autowired
 	ServiceFactory servFactory;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping("/")
 	public Object init() {
 
@@ -66,12 +66,12 @@ public class TestController {
 		data.put("today", dateFormat.format(cal.getTime()));
 
 		data.put("today", Calendar.getInstance());
-		TemplateConvertComponent.convertMapByTemplate("person.xml", data);
+		TemplateConvert.convertMapByTemplate("person.xml", data);
 		// String method = "qrsqd";// 流里获取到的传入执行哪个service
 		// 测试 地址http://localhost:8080/query/qxsqd or qrsqd
 		// 见配置application.properties
 
-		return TemplateConvertComponent.convertMapByTemplate("person.xml", data);
+		return TemplateConvert.convertMapByTemplate("person.xml", data);
 	}
 
 }

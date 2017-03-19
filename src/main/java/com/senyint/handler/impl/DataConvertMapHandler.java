@@ -14,7 +14,13 @@ import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
 import com.senyint.util.MapUtil;
 
-/*
+/**
+ * 
+ * @ClassName: DataConvertMapHandler
+ * @Description: 数据转换Handler 根据DataStore内的StreamString转Map
+ * @author hpym365@gmail.com
+ * @date 2017年3月19日 下午9:37:09
+ * @version V1.0
  */
 @Component("DATACONVERTMAP")
 public class DataConvertMapHandler extends BaseHandler implements Handler {
@@ -23,7 +29,7 @@ public class DataConvertMapHandler extends BaseHandler implements Handler {
 
 	@Override
 	public void execute(DataStore dataStore) {
-//		Config config = this.getConfig(dataStore);// 当前handler的配置
+		// Config config = this.getConfig(dataStore);// 当前handler的配置
 		// TODO Auto-generated method stub
 		try {
 			this.convertXmlToMap(dataStore, dataStore.getDataTag());

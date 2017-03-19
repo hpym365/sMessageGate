@@ -12,7 +12,14 @@ import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
 
-/*
+/**
+ * 
+ * @ClassName: JudgeHandler
+ * @Description: 判断的Handler，配置对应的执行Js或Groovy 返回判断结果，
+ * 配合BranchHandler来根据不同情况执行分支HandlerList
+ * @author hpym365@gmail.com
+ * @date 2017年3月19日 下午9:38:07
+ * @version V1.0
  */
 @Component("IF")
 public class JudgeHandler extends BaseHandler implements Handler {

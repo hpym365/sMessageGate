@@ -1,0 +1,86 @@
+logging.level.com.senyint=DEBUG
+
+qrsqd.serv=confirm
+qrsqd.serv.handlerlist=getData,ConvertData
+
+qxsqd.serv=cancel
+#qxsqd.serv.handlerlist={"hanlderlist":[{"handler":"convertdata","config":"conr1",dep:[{"handler":"Testa","config":"cor2",dep:[{"hanlder":"Testc"}]},{"hanlder":"Testb"}]},{"handler":"getdata"},{"handler":"convertdata","config":"cor2"}]}
+#qxsqd.serv.handlerlist={"hanlderlist":[{"handler":"convertdata","config":"conr1",dep:[{"handler":"Testa","config":"cor2",dep:[{"hanlder":"Testc"}]},{"hanlder":"Testb"}]},{"handler":"getdata"},{"handler":"convertdata","config":"cor2"}]}
+#qxsqd.serv.handlerlist={"hanlderlist":[{"handler":"convertdata","config":"conr1","dep":[{"handler":"Testa","config":"cor2","dep":[{"handler":"Testc","dep":[{"handler":"Testa"},{"handler":"Testa"}]}]},{"handler":"Testb"}]},{"handler":"getdata"},{"handler":"convertdata","config":"cor2"}]}
+qxsqd.serv.handlerlist={"hanlderlist":[{"handler":"convertdata","config":"conr1","dep":[{"handler":"getdata","config":"cor2","dep":[{"handler":"getdata","dep":[{"handler":"getdata"},{"handler":"getdata"}]}]},{"handler":"getdata"}]},{"handler":"getdata"},{"handler":"convertdata","config":"cor2"}]}
+zscs.serv.handlerlist=[{"handler":"recivestream","config":"recivestream"},{"handler":"DATACONVERTMAP","config":"recivestream"},{"handler":"database","config":"cxb"},{"handler":"convertdata","config":"convert"},{"handler":"if","config":"if"},{"handler":"branch","config":"branch"},{"handler":"database","config":"cxc"},{"handler":"convertdata","config":"convert1"}]
+zscs.serv=cancel
+#set service stream encoding
+zscs.encoding=utf-8
+#get the data from element name
+zscs.dataTag=DATA
+
+convert.scriptFile=convert.groovy
+convert.scriptType=groovy
+convert.funName=convert
+
+convert1.scriptFile=convert1.groovy
+convert1.scriptType=groovy
+convert1.funName=convert
+
+cxb.scriptFile=cxa.js
+cxb.dataSource=testa
+cxb.scriptType=javascript
+cxb.funName=test
+
+cxc.scriptFile=cxc.js
+cxc.dataSource=testc
+cxc.scriptType=javascript
+cxc.funName=test
+
+if.scriptFile=if.js
+if.scriptType=javascript
+if.funName=test
+
+branch.01=getdataalist
+branch.02=[{"handler":"getdatab","config":"b"},{"handler":"getdataa","config":"a"}]
+getdataalist=[{"handler":"getdataA","config":"b"},{"handler":"getdatab","config":"a"}]
+#qxsqd:
+#	serv:
+#		handlerlist: convertdata:conr1
+#			deplist:Testa:cor2,Testb
+			
+
+cor1={"type":"convert"}
+#type convert zhuan huan
+cor2=456
+
+qxsqd1.serv=cancel
+qxsqd1.serv.handlerlist=getdata
+
+hello=def hello(language) {return "Hello $language"}
+
+script.groovyPath=groovy\\
+script.javascriptPath=javascript\\
+
+groovy.serv=cancel
+groovy.serv.handlerlist={"hanlderlist":[{"handler":"database","config":"cxa"}]}
+
+
+#datasource:
+#	testa:
+#		url:jdbc:oracle:thin:@172.16.151.52:1521:orcl
+#		driver:oracle.jdbc.driver.OracleDriver
+#		username:test
+#		password:test
+datasource.testa.url=jdbc:oracle:thin:@59.44.27.126:1521:orcl
+datasource.testa.driver=oracle.jdbc.driver.OracleDriver
+datasource.testa.username=test
+datasource.testa.password=test
+
+datasource.testc.url=jdbc:oracle:thin:@59.44.27.126:1521:orcl
+datasource.testc.driver=oracle.jdbc.driver.OracleDriver
+datasource.testc.username=nmis
+datasource.testc.password=nmis
+
+spring.datasource.url=jdbc:oracle:thin:@172.16.180.113:1521:orcl
+spring.datasource.username=test
+spring.datasource.password=test
+spring.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
+
+xmlandjson.template.src=src/main/resources/template/

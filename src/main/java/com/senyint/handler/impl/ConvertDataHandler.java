@@ -1,5 +1,6 @@
 package com.senyint.handler.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,15 @@ import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
 
+/**
+ * @ClassName: ConvertDataHandler
+ * @Description: 数据转换Handler，根据其他handler计算结果， 通过配置好的Js或Groovy文件进行转换，
+ *               参数为OrginData tempData resultData
+ *               将配置dataStore内的tempData等计算出的数据合并放到resultData内
+ * @author hpym365@gmail.com
+ * @date 2017年3月19日 下午9:43:41
+ * @version V1.0
+ */
 @Component("CONVERTDATA")
 public class ConvertDataHandler extends BaseHandler implements Handler {
 
@@ -29,7 +39,7 @@ public class ConvertDataHandler extends BaseHandler implements Handler {
 	// }
 	// }
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unchecked")
 	public void execute(DataStore dataStore) {
 		Config config = this.getConfig(dataStore);// 当前handler的配置
 
@@ -37,7 +47,16 @@ public class ConvertDataHandler extends BaseHandler implements Handler {
 		Object result = engine.runScriptConvertData(config.getScriptType(), config.getScriptFile(), config.getFunName(),
 				params);
 		Map<String, Object> resMap = (Map<String, Object>) result;
-		dataStore.setResultData(resMap.get("resultData"));
+		if (resMap.get("resultData") != null) {
+//			Map<String, Object> resultData = dataStore.getResultData();
+//			resultData.putAll((Map<String, Object>) resMap.get("resultData"));
+			dataStore.setResultData(resMap.get("resultData"));
+		}
+		if (resMap.get("tempData") != null) {
+			Map<String, Object> tempData = dataStore.getTempData();
+			tempData.putAll((Map<String, Object>) resMap.get("tempData"));
+			dataStore.setTempData(tempData);
+		}
 		// dataStore.setTempData(resMap.get("tempData"));
 		System.out.println("ConvertDataHandler execute");
 		// System.out.println(config);

@@ -2,7 +2,6 @@ package com.senyint.util;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -217,19 +216,23 @@ public class ScriptUtils {
 		}
 	}
 
-	public static void main(String[] args) {
-		ScriptUtils groovy = new ScriptUtils();
-		groovy.getScriptEngineFactoryList();
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("language", "groovy test");
-		Object res = groovy.runGroovyScript("return \"Hello $language\"", params);
-		String script = "def hello(param1,param2) {return \"the params is $param1 and $param2\"}";
-		Object res1 = groovy.runGroovyScript(script, "hello", new String[] { "param1", "param2" });
-		System.out.println(res);
-		System.out.println(res1);
-
-		Object res3 = groovy.runGroovyScriptByFile(null, "hello.groovy", "hello", new String[] { "param3", "param4" });
-		System.out.println(res3);
-
-	}
+	// public static void main(String[] args) {
+	// ScriptUtils groovy = new ScriptUtils();
+	// groovy.getScriptEngineFactoryList();
+	// Map<String, Object> params = new HashMap<String, Object>();
+	// params.put("language", "groovy test");
+	// Object res = groovy.runGroovyScript("return \"Hello $language\"",
+	// params);
+	// String script = "def hello(param1,param2) {return \"the params is $param1
+	// and $param2\"}";
+	// Object res1 = groovy.runGroovyScript(script, "hello", new String[] {
+	// "param1", "param2" });
+	// System.out.println(res);
+	// System.out.println(res1);
+	//
+	// Object res3 = groovy.runGroovyScriptByFile(null, "hello.groovy", "hello",
+	// new String[] { "param3", "param4" });
+	// System.out.println(res3);
+	//
+	// }
 }

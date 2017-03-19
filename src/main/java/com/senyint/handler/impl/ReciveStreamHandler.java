@@ -10,44 +10,45 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
 import com.senyint.log.SenyintLog;
 
+/**
+ * 
+ * @ClassName: ReciveStreamHandler
+ * @Description: 流接收Handler 接收流转换为String保存到dataStore的StrreamStr 
+ * @author hpym365@gmail.com
+ * @date 2017年3月19日 下午9:42:30
+ * @version V1.0
+ */
 @Component("RECIVESTREAM")
 public class ReciveStreamHandler extends BaseHandler implements Handler {
 
 	Logger logger = Logger.getLogger(this.getClass());
 
 	public void execute(DataStore dataStore) {
-		Config config = this.getConfig(dataStore);
 		String streamStr = "";
 		try {
 			streamStr = this.reciveStream(dataStore);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SenyintLog.error(e);
 		}
 		dataStore.setStreamStr(streamStr);
 
 		String streamType = "";
 
-		SenyintLog.debug("123123");
-		try{
-			streamType = this.getStreamType(dataStore);
-		}catch(Exception e){
-			SenyintLog.error(e,"005","测试");
-//			throw new RuntimeException("streamType转换错误");
-		}
+		streamType = this.getStreamType(dataStore);
+
 		System.out.println("继续执行了");
 		if (streamType == null)
 			throw new RuntimeException("流文件类型检查失败  只支持 xml json");
 
 		dataStore.setStreamType(streamType);
 		System.out.println("ReciveStreamHandler execute");
-//		return streamType;
+		// return streamType;
 	}
 
 	public String reciveStream(DataStore dataStore) throws IOException {
@@ -57,14 +58,14 @@ public class ReciveStreamHandler extends BaseHandler implements Handler {
 		BufferedReader reader;
 		String streamStr = "";
 		try {
-			reader = new BufferedReader(new InputStreamReader(in, dataStore.getEncoding()));
+			reader = new BufferedReader(new InputStreamReader(in, dataStore.getEncode()));
 			String temp = "";
 			while ((temp = reader.readLine()) != null) {
 				streamStr = streamStr + temp;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SenyintLog.error(e);
 		}
 
 		String reAddr = request.getRemoteAddr();

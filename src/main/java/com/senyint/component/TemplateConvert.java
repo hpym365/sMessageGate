@@ -13,7 +13,7 @@ import com.senyint.util.TemplateConvertUtils;
  * 使用component的类调用工具类 传入读取的配置文件变量
  */
 @Component
-public class TemplateConvertComponent {
+public class TemplateConvert {
 
 	// @Value("${src}")
 	// private String xmlJosnTemlateSrc;

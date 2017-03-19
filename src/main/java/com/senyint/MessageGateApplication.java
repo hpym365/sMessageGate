@@ -6,10 +6,10 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-public class Application {
+public class MessageGateApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(MessageGateApplication.class, args);
 	}
 
 }

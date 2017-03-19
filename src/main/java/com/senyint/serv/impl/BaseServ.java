@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.HandlerFactory;
-import com.senyint.handler.impl.BranchHandler;
-import com.senyint.util.PropertiesUtils;
+import com.senyint.util.ConfigKeyUtils;
 
 public class BaseServ {
 
@@ -19,25 +18,24 @@ public class BaseServ {
 
 		this.getDataStoreConfig(dataStore);
 
-		List<Config> handlerList = handlerFactory.getHandler(dataStore.getRequestCommand());
+		List<Config> handlerList = handlerFactory.getHandler(dataStore);
 
 		handlerFactory.executeHandlerList(handlerList, dataStore);
-//		for (int i = 0; i < handlerList.size(); i++) {
-//			Config cfg = handlerList.get(i);
-//			dataStore.put(cfg.getHandler().toString(), cfg);
-//			cfg.getHandler().getClass().getName();
-//			cfg.getHandler().execute(dataStore);
-//
-//			if (cfg.getHandler() instanceof BranchHandler) {
-//				// 执行分支
-//
-//			}
-//
-//			if ("true".equals(dataStore.getTempStringData().get("break"))) {
-//				break;
-//			}
-//		}
-		
+		// for (int i = 0; i < handlerList.size(); i++) {
+		// Config cfg = handlerList.get(i);
+		// dataStore.put(cfg.getHandler().toString(), cfg);
+		// cfg.getHandler().getClass().getName();
+		// cfg.getHandler().execute(dataStore);
+		//
+		// if (cfg.getHandler() instanceof BranchHandler) {
+		// // 执行分支
+		//
+		// }
+		//
+		// if ("true".equals(dataStore.getTempStringData().get("break"))) {
+		// break;
+		// }
+		// }
 
 		// handlerList.forEach(cfg -> {
 		// dataStore.put(cfg.getHandler().toString(), cfg);
@@ -58,12 +56,19 @@ public class BaseServ {
 
 	// 每个service共享一个datastore 所以公用的配置放这里 config是每个handler的
 	public void getDataStoreConfig(DataStore dataStore) {
-		// 每个handler都需要读取的配置
-		String dataTag = PropertiesUtils.getProperties(dataStore.getRequestCommand() + ".dataTag");
-		dataStore.setDataTag(dataTag);
 
-		String encoding = PropertiesUtils.getProperties(dataStore.getRequestCommand() + ".encoding", "UTF-8");
-		dataStore.setEncoding(encoding);
+		// 每个handler都需要读取的配置
+		String dataTag = (String) dataStore.getYaml(ConfigKeyUtils.getDataTag(dataStore.getRequestCommand()));
+		// String dataTag =
+		// PropertiesUtils.getProperties(dataStore.getRequestCommand() +
+		// ".dataTag");
+		dataStore.setDataTag(dataTag);
+		//
+		String encode = (String) dataStore.getYaml(ConfigKeyUtils.getEncode(dataStore.getRequestCommand()));
+		// String encoding =
+		// PropertiesUtils.getProperties(dataStore.getRequestCommand() +
+		// ".encoding", "UTF-8");
+		dataStore.setEncode(encode);
 	}
 
 }

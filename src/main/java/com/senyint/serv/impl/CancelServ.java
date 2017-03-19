@@ -1,15 +1,11 @@
 package com.senyint.serv.impl;
 
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
-import com.senyint.entity.SystemConstants;
 import com.senyint.serv.Serv;
 
 /**

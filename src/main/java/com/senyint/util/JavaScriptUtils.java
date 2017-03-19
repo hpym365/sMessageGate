@@ -2,7 +2,6 @@ package com.senyint.util;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +25,10 @@ import groovy.util.GroovyScriptEngine;
  * @version 创建时间：2017年2月28日 下午9:06:55 类说明 java调用 groovy 学习
  */
 @Component
-@ConfigurationProperties(prefix="spring.datasource.primary")
+@ConfigurationProperties(prefix = "spring.datasource.primary")
+@SuppressWarnings({ "resource", "unused" })
 public class JavaScriptUtils {
-	
+
 	@Value("$javascript.path")
 	String jsPath;
 
@@ -53,7 +53,6 @@ public class JavaScriptUtils {
 		ScriptEngine engine = manager.getEngineByName("javascript");
 		try {
 			FileReader fr = new FileReader(filepath + filename);
-			@SuppressWarnings("unused")
 			Object obj = engine.eval(new FileReader(filepath + filename));
 			Invocable inv = (Invocable) engine;
 			Object res = inv.invokeFunction(funname, params);
@@ -176,19 +175,23 @@ public class JavaScriptUtils {
 		}
 	}
 
-	public static void main(String[] args) {
-		JavaScriptUtils groovy = new JavaScriptUtils();
-		groovy.getScriptEngineFactoryList();
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("language", "groovy test");
-		Object res = groovy.runGroovyScript("return \"Hello $language\"", params);
-		String script = "def hello(param1,param2) {return \"the params is $param1 and $param2\"}";
-		Object res1 = groovy.runGroovyScript(script, "hello", new String[] { "param1", "param2" });
-		System.out.println(res);
-		System.out.println(res1);
-
-		Object res3 = groovy.runGroovyScriptByFile(null, "hello.groovy", "hello", new String[] { "param3", "param4" });
-		System.out.println(res3);
-
-	}
+	// public static void main(String[] args) {
+	// JavaScriptUtils groovy = new JavaScriptUtils();
+	// groovy.getScriptEngineFactoryList();
+	// Map<String, Object> params = new HashMap<String, Object>();
+	// params.put("language", "groovy test");
+	// Object res = groovy.runGroovyScript("return \"Hello $language\"",
+	// params);
+	// String script = "def hello(param1,param2) {return \"the params is $param1
+	// and $param2\"}";
+	// Object res1 = groovy.runGroovyScript(script, "hello", new String[] {
+	// "param1", "param2" });
+	// System.out.println(res);
+	// System.out.println(res1);
+	//
+	// Object res3 = groovy.runGroovyScriptByFile(null, "hello.groovy", "hello",
+	// new String[] { "param3", "param4" });
+	// System.out.println(res3);
+	//
+	// }
 }

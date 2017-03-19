@@ -1,9 +1,6 @@
 package com.senyint.util;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -83,7 +80,7 @@ public class XmlUtil {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Map<String, Object> xml2Map(String in) throws DocumentException {
 		Document doc = DocumentHelper.parseText(in);
 		Map<String, Object> map = new HashMap<String, Object>();

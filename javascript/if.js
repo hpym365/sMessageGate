@@ -1,4 +1,4 @@
 function test(){
 	
-	return "01";
+	return "02";
 }

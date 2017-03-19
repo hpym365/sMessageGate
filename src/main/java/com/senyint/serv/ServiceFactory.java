@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.senyint.entity.DataStore;
-import com.senyint.util.PropertiesUtils;
+import com.senyint.util.ConfigKeyUtils;
 
 /**
  * @author hpym365
@@ -20,8 +20,10 @@ public class ServiceFactory {
 	Serv serv;
 
 	public Serv getServ(DataStore dataStore) {
-		
-		String servName = PropertiesUtils.getProperties(dataStore.getRequestCommand() + ".serv","default");
+		String servName = (String) dataStore.getYaml(ConfigKeyUtils.getServiceName(dataStore.getRequestCommand()));
+		// String servName =
+		// PropertiesUtils.getProperties(dataStore.getRequestCommand() +
+		// ".serv","default");
 
 		try {
 			serv = (Serv) app.getBean(servName);
