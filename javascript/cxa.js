@@ -5,8 +5,11 @@ function test(map){
 	for(var i=0;i<list.test.length;i++){
 		var map = {};
 		map.key = "student";
-		map.sql="select * from student where name='"+list.test[i]+"'";
+		map.sql="select * from student where name=?";
+		param = [list.test[i]]
+		map.param=param;
 		arr[i]=map;
+		
 	}
 //	data.DiagID
 //	

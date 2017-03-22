@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.StringReader;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.*;
@@ -15,7 +16,7 @@ import javax.xml.transform.stream.*;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class SOAPClientSAAJ2 {
+public class SOAPClientTest {
 
 	/**
 	 * Starting point for the SAAJ - SOAP Client Testing
@@ -28,7 +29,7 @@ public class SOAPClientSAAJ2 {
 			SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
 			// Send SOAP Message to SOAP Server
-			String url = "http://webservice.36wu.com/MobilePhoneService.asmx";
+			String url = "http://localhost:8080/soap/hello?wsdl";
 			SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(), url);
 
 			// Process the SOAP Response
@@ -46,19 +47,23 @@ public class SOAPClientSAAJ2 {
 		SOAPMessage soapMessage = messageFactory.createMessage();
 		SOAPPart soapPart = soapMessage.getSOAPPart();
 
-		String serverURI = "http://webservice.36wu.com/";
+		String serverURI = "http://webservice.test.senyint.com/";
 
 		// SOAP Envelope
 		SOAPEnvelope envelope = soapPart.getEnvelope();
-		envelope.addNamespaceDeclaration("example", serverURI);
+//		QName qName = new QName("http://webservice.test.senyint.com/", "sayHello");
+//		envelope.addChildElement("sayHello");
+		// envelope.addChildElement(qName);
 
-		String xml = "<getInfoByMobilePhone xmlns=\"Yangzhili\"><PhoneNumber>13080800000</PhoneNumber><UserId>98765</UserId></getInfoByMobilePhone>";
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setNamespaceAware(true);
-
-		DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
-
-		Document document = documentBuilder.parse(new InputSource(new StringReader(xml)));
+		// String xml = "<getInfoByMobilePhone
+		// xmlns=\"Yangzhili\"><PhoneNumber>13080800000</PhoneNumber><UserId>98765</UserId></getInfoByMobilePhone>";
+		// DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		// dbf.setNamespaceAware(true);
+		//
+		// DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
+		//
+		// Document document = documentBuilder.parse(new InputSource(new
+		// StringReader(xml)));
 
 		/*
 		 * <soap12:Envelope
@@ -73,15 +78,15 @@ public class SOAPClientSAAJ2 {
 		// SOAP Body
 		SOAPBody soapBody = envelope.getBody();
 
-		soapBody.addDocument(document);
-		// SOAPElement root = soapBody.addChildElement("getInfoByMobilePhone");
-		// SOAPElement soapBodyElem = root.addChildElement("PhoneNumber");
-		// SOAPElement soapBodyElem1 = root.addChildElement("UserId");
-		// soapBodyElem.addTextNode("13000000000");
-		// soapBodyElem1.addTextNode("123");
+		SOAPElement root = soapBody.addChildElement("sayHello");
+		SOAPElement addChildElement = root.addChildElement("arg0");
+		addChildElement.addTextNode("aba");
+		// SOAPElement addChildElement =
+		// root.addChildElement("xsi:type=\"xsd:string\"", "arg0");
+		// addChildElement.addTextNode("13000000000");
 
 		MimeHeaders headers = soapMessage.getMimeHeaders();
-		headers.addHeader("SOAPAction", "Yangzhili/getInfoByMobilePhone");
+		headers.addHeader("SOAPAction", "");
 
 		soapMessage.saveChanges();
 

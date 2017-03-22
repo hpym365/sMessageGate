@@ -43,12 +43,12 @@ public class ScriptEngine {
 		try {
 			Object sqlRes = this.runScriptByConfig(scriptType, scriptFile, funName, params);
 			if (sqlRes instanceof Collection) {
-				List<Map<String, String>> sqlList = (List<Map<String, String>>) sqlRes;
+				List<Map<String, Object>> sqlList = (List<Map<String, Object>>) sqlRes;
 				sqlList.forEach(sqlMap -> {
 					exec.executeSql(dataStore, jdbc, sqlMap);
 				});
 			} else if (sqlRes instanceof Map) {
-				exec.executeSql(dataStore, jdbc, (Map<String, String>) sqlRes);
+				exec.executeSql(dataStore, jdbc, (Map<String, Object>) sqlRes);
 			} else {
 				logger.error(sqlRes);
 				throw new RuntimeException("当前执行脚本" + scriptFile + "的返回类型应为List或String(执行一条或多条sql)");

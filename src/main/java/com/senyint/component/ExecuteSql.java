@@ -1,6 +1,7 @@
 package com.senyint.component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -10,27 +11,31 @@ import org.springframework.stereotype.Component;
 
 import com.senyint.entity.DataStore;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+
 @Component
 public class ExecuteSql {
 
 	Logger logger = Logger.getLogger(this.getClass());
 
-	@SuppressWarnings("unchecked")
-	public void executeSql(DataStore dataStore, JdbcTemplate jdbc, Map<String, String> sqlMap) {
-		String sql = sqlMap.get("sql");
-		logger.debug("即将要执行的sql语句:"+sql);
+	@SuppressWarnings({ "unchecked", "restriction" })
+	public void executeSql(DataStore dataStore, JdbcTemplate jdbc, Map<String, Object> sqlMap) {
+		String sql = (String) sqlMap.get("sql");
+		logger.debug("即将要执行的sql语句:" + sql);
 		// List<Map<String, Object>> reslist = new ArrayList<Map<String,
 		// Object>>();
 		if (sql.startsWith("select")) {
-			List<Map<String, Object>> res = this.querySql(jdbc, sqlMap.get("sql"));
+			ScriptObjectMirror som = (ScriptObjectMirror) sqlMap.get("param");
+			Collection<Object> param = som.values();
+			List<Map<String, Object>> res = this.querySql(jdbc, sql, param.toArray());
 			if (res != null) {
-				Map<String,Object> tempData = dataStore.getTempData();
+				Map<String, Object> tempData = dataStore.getTempData();
 				// 获取指定的key
 				List<Map<String, Object>> keyList = (List<Map<String, Object>>) tempData.get(sqlMap.get("key"));
 				if (keyList == null)
 					keyList = new ArrayList<Map<String, Object>>();
 				keyList.addAll(res);
-				tempData.put(sqlMap.get("key"), keyList);
+				tempData.put((String) sqlMap.get("key"), keyList);
 				dataStore.setTempData(tempData);
 			}
 			// dataStore.addSelectList(this.querySql(jdbc, sql));
@@ -57,8 +62,9 @@ public class ExecuteSql {
 
 	}
 
-	public List<Map<String, Object>> querySql(JdbcTemplate jdbc, String sql) {
-		return jdbc.queryForList(sql);
+	public List<Map<String, Object>> querySql(JdbcTemplate jdbc, String sql, Object[] args) {
+		// return jdbc.queryForList(sql);
+		return jdbc.queryForList(sql, args);
 	}
 
 	public void executeSql(JdbcTemplate jdbc, String sql) {

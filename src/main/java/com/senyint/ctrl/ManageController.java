@@ -72,7 +72,7 @@ public class ManageController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}  
 		Map<String, Object> map = (Map<String, Object>) yamlValue;
 		// map
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
