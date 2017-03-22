@@ -6,52 +6,15 @@ import java.util.Map;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
-
+/**
+ * 
+ * @ClassName: TemplateConvertUtils
+ * @Description: ThymeLeaf通过模板转换对象(根据模板和map生成)
+ * @author hpym365@gmail.com
+ * @date 2017年3月22日 下午10:44:02
+ * @version V1.0
+ */
 public class TemplateConvertUtils {
-
-	// @SuppressWarnings("unused")
-	// public static void main(String[] args) {
-	//
-	// String str = SystemConstants.XML_JSON_TEMPLATE_SRC;
-	// Map data = new HashMap();
-	//
-	// Map obj = new HashMap();
-	//
-	// obj.put("value1", 1);
-	// obj.put("value2", 2);
-	//
-	// data.put("name", "Hello world");
-	// data.put("age", "999");
-	// data.put("obj", obj);
-	//
-	// List stus = new ArrayList();
-	//
-	// Map stu1 = new HashMap();
-	// stu1.put("name", "xiao wang");
-	// Map stu2 = new HashMap();
-	// stu2.put("name", "xiao han");
-	// Map stu3 = new HashMap();
-	// stu3.put("name", "xiao lu");
-	//
-	// stus.add(stu1);
-	// stus.add(stu2);
-	// stus.add(stu3);
-	//
-	// data.put("stus", stus);
-	//
-	// SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
-	// Calendar cal = Calendar.getInstance();
-	//
-	// // WebContext ctx = new WebContext(request, servletContext,
-	// // request.getLocale());
-	// data.put("today", dateFormat.format(cal.getTime()));
-	//
-	// data.put("today", Calendar.getInstance());
-	// String s =
-	// TemplateConvertUtils.convertMapByTemplate("src/main/resources/template/",
-	// "person.xml", data);
-	// System.out.println(s);
-	// }
 
 	public static String convertMapByTemplate(String xmlJosnTemlateSrc, String templateFileName,
 			Map<String, Object> data) {
@@ -59,7 +22,6 @@ public class TemplateConvertUtils {
 
 		FileTemplateResolver templateResolver = new FileTemplateResolver();
 		// templateResolver.setTemplateMode("XML");
-		// templateResolver.setPrefix("C:\\Users\\ludz\\Desktop\\pdfs");
 		templateResolver.setPrefix(xmlJosnTemlateSrc);
 		// templateResolver.setSuffix(".xml");
 		templateResolver.setCacheTTLMs(3600000L);

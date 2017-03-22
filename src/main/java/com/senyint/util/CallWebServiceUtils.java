@@ -16,6 +16,14 @@ import org.apache.axis2.rpc.client.RPCServiceClient;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 
+/**
+ * 
+ * @ClassName: CallWebServiceUtils
+ * @Description: webservice公共调用 客户端接口工具类
+ * @author hpym365@gmail.com
+ * @date 2017年3月22日 下午11:12:27
+ * @version V1.0
+ */
 public class CallWebServiceUtils {
 
 	public static Object[] callWebServiceCxf(String url, String nameSpace, String methodName, Object... args)
