@@ -42,11 +42,15 @@ public class AxisCallWebService {
 	}
 
 	public static void main(String[] args) {
+		long time = System.currentTimeMillis();
 		AxisCallWebService t = new AxisCallWebService();
-		Object[] param = new Object[1];
-		param[0] = "Dear I miss you";// Object是用来存储方法的参数
-		String result = t.invokeWebService("http://localhost:8080/soap/hello?wsdl",
-				"http://webservice.test.senyint.com/", "sayHello", "arg0", "Dear I miss you");
-		System.out.println(result);
+		for (int i = 0; i < 50; i++) {
+			Object[] param = new Object[1];
+			param[0] = "Dear I miss you";// Object是用来存储方法的参数
+			String result = t.invokeWebService("http://localhost:8080/soap/hello?wsdl",
+					"http://webservice.test.senyint.com/", "sayHello", "arg0", "Dear I miss you");
+			System.out.println(result);
+		}
+		System.out.println("执行了" + (time - System.currentTimeMillis()));
 	}
 }

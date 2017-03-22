@@ -2,7 +2,7 @@ my:
   servers: [dev.bar.com, foo.bar.com]
 logging:
   level:
-    com: {senyint: DEBUG}
+    com: {senyint: INFO}
 script: {groovyPath: groovy\\, javascriptPath: javascript\\}
 datasource:
   testa: {url: 'jdbc:oracle:thin:@59.44.27.126:1521:orcl', driver: oracle.jdbc.driver.OracleDriver,
