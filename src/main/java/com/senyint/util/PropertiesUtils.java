@@ -8,7 +8,7 @@ public class PropertiesUtils {
 
 	private static Properties properties;
 
-	private static Properties getProInstance() throws Exception {
+	private static synchronized Properties getProInstance() throws Exception {
 		if (properties == null) {
 			Properties p = new Properties();
 			p.load(new FileInputStream(new File("src/main/resources/application.properties")));
