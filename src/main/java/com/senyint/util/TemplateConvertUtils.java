@@ -18,11 +18,9 @@ import org.thymeleaf.templateresolver.FileTemplateResolver;
 public class TemplateConvertUtils {
 
 	private static final String DefaultTemplateCharset = "GBK";
-	private static final String DefaultCharset = "UTF-8";
 
 	public static String convertMapByTemplate(String xmlJosnTemlateSrc, String templateFileName,
 			Map<String, Object> data, String charset) {
-		Locale locale = getLocale(charset);
 		FileTemplateResolver templateResolver = new FileTemplateResolver();
 		// templateResolver.setTemplateMode("XML");
 		templateResolver.setPrefix(xmlJosnTemlateSrc);
@@ -33,17 +31,16 @@ public class TemplateConvertUtils {
 		TemplateEngine templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
 
-		return templateEngine.process(templateFileName, new Context(locale, data));
+		return templateEngine.process(templateFileName, new Context(Locale.getDefault(), data));
 
 	}
 
 	public static String convertMapByTemplate(String xmlJosnTemlateSrc, String templateFileName,
 			Map<String, Object> data) {
-		return convertMapByTemplate(templateFileName, data, DefaultCharset);
+		return convertMapByTemplate(templateFileName, data);
 	}
 
-	public static String convertMapByTemplate(String templateFileName, Map<String, Object> data, String charset) {
-		Locale locale = getLocale(charset);
+	public static String convertMapByTemplate(String templateFileName, Map<String, Object> data) {
 		FileTemplateResolver templateResolver = new FileTemplateResolver();
 		// templateResolver.setTemplateMode("XML");
 		// templateResolver.setPrefix(xmlJosnTemlateSrc);
@@ -54,13 +51,12 @@ public class TemplateConvertUtils {
 		TemplateEngine templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
 
-		return templateEngine.process(templateFileName, new Context(locale, data));
+		return templateEngine.process(templateFileName, new Context(Locale.getDefault(), data));
 
 	}
 
 	public static String convertMapByTemplate(String prefix, String suffix, Long cacheTTLMs, String templateCharset,
 			String templateFileName, Map<String, Object> data, String charset, String templateMode) {
-		Locale locale = getLocale(charset);
 		FileTemplateResolver templateResolver = new FileTemplateResolver();
 		templateResolver.setTemplateMode(templateMode);
 		templateResolver.setPrefix(prefix);
@@ -71,14 +67,8 @@ public class TemplateConvertUtils {
 		TemplateEngine templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
 
-		return templateEngine.process(templateFileName, new Context(locale, data));
+		return templateEngine.process(templateFileName, new Context(Locale.getDefault(), data));
 
 	}
 
-	public static Locale getLocale(String charset) {
-		if (charset != null) {
-			return new Locale(charset);
-		}
-		return Locale.getDefault();
-	}
 }
