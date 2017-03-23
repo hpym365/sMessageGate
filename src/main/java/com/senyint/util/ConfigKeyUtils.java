@@ -15,6 +15,13 @@ public class ConfigKeyUtils {
 	private static final String HANDLER_CONFIG_DATASOURCE = ".dataSource";
 	private static final String HANDLER_CONFIG_TEMPLATE_NAME = ".templateName";
 
+	private static final String HANDLER_CONFIG_WEBSERVICE_URL = ".url";
+	private static final String HANDLER_CONFIG_WEBSERVICE_NAME_SPACE = ".nameSpace";
+	private static final String HANDLER_CONFIG_WEBSERVICE_METHOD_NAME = ".methodName";
+	private static final String HANDLER_CONFIG_WEBSERVICE_PARAM_NAME = ".paramName";
+	private static final String HANDLER_CONFIG_WEBSERVICE_GEN_WEBSERVICE_DATA_KEY = ".genWebServiceDataKey";
+	private static final String HANDLER_CONFIG_WEBSERVICE_SAVE_WEBSERVICE_DATA_KEY = ".saveWebServiceDataKey";
+
 	public static String getServiceName(String requestCommand) {
 		return REQUEST_COMMAND_BEFORE + requestCommand + REQUEST_COMMAND_AFTER;
 	}
@@ -54,9 +61,32 @@ public class ConfigKeyUtils {
 	public static String getHandlerDataSource(String configName) {
 		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_DATASOURCE;
 	}
-	
+
 	public static String getHandlerTemplateName(String configName) {
 		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_TEMPLATE_NAME;
 	}
-	
+
+	public static String getHandlerConfigWebServiceUrl(String configName) {
+		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_WEBSERVICE_URL;
+	}
+
+	public static String getHandlerConfigWebServiceNameSpace(String configName) {
+		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_WEBSERVICE_NAME_SPACE;
+	}
+
+	public static String getHandlerConfigWebServiceMethodName(String configName) {
+		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_WEBSERVICE_METHOD_NAME;
+	}
+
+	public static String getHandlerConfigWebServiceParamName(String configName) {
+		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_WEBSERVICE_PARAM_NAME;
+	}
+
+	public static String getHandlerConfigWebServiceGenWebServiceDataKey(String configName) {
+		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_WEBSERVICE_GEN_WEBSERVICE_DATA_KEY;
+	}
+
+	public static String getHandlerConfigWebServiceSaveWebServiceDataKey(String configName) {
+		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_WEBSERVICE_SAVE_WEBSERVICE_DATA_KEY;
+	}
 }

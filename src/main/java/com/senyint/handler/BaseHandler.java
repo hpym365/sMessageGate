@@ -52,6 +52,23 @@ public class BaseHandler implements Handler {
 
 		config.setJdbcTemplate(jdbcTemplate);
 
+		String url = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceUrl(configName));
+		String nameSpace = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceNameSpace(configName));
+		String methodName = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceParamName(configName));
+		String paramName = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceMethodName(configName));
+		String genWebServiceDataKey = (String) dataStore
+				.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceGenWebServiceDataKey(configName));
+
+		String saveWebServiceDataKey = (String) dataStore
+				.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceSaveWebServiceDataKey(configName));
+
+		config.setUrl(url);
+		config.setNameSpace(nameSpace);
+		config.setMethodName(methodName);
+		config.setParamName(paramName == "" ? "arg0" : paramName);
+		config.setGenWebServiceDataKey(genWebServiceDataKey);
+		config.setSaveWebServiceDataKey(saveWebServiceDataKey);
+
 		return config;
 	}
 

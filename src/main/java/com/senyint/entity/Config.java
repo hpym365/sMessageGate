@@ -24,6 +24,60 @@ public class Config {
 	private String funName;
 	private String dataTag;
 	private String templateFileName;
+	private String url;
+	private String nameSpace;
+	private String methodName;
+	private String paramName;
+	private String genWebServiceDataKey;
+	private String saveWebServiceDataKey;
+
+	public String getSaveWebServiceDataKey() {
+		return saveWebServiceDataKey;
+	}
+
+	public void setSaveWebServiceDataKey(String saveWebServiceDataKey) {
+		this.saveWebServiceDataKey = saveWebServiceDataKey;
+	}
+
+	public String getParamName() {
+		return paramName;
+	}
+
+	public void setParamName(String paramName) {
+		this.paramName = paramName;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getNameSpace() {
+		return nameSpace;
+	}
+
+	public void setNameSpace(String nameSpace) {
+		this.nameSpace = nameSpace;
+	}
+
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+
+	public String getGenWebServiceDataKey() {
+		return genWebServiceDataKey;
+	}
+
+	public void setGenWebServiceDataKey(String genWebServiceDataKey) {
+		this.genWebServiceDataKey = genWebServiceDataKey;
+	}
 
 	public String getTemplateFileName() {
 		return templateFileName;
