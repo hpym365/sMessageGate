@@ -22,10 +22,7 @@ public class TemplateConvertUtils {
 
 	public static String convertMapByTemplate(String xmlJosnTemlateSrc, String templateFileName,
 			Map<String, Object> data, String charset) {
-		Locale locale = Locale.getDefault();
-		if (charset == null) {
-			locale = Locale.getDefault();
-		}
+		Locale locale = getLocale(charset);
 		FileTemplateResolver templateResolver = new FileTemplateResolver();
 		// templateResolver.setTemplateMode("XML");
 		templateResolver.setPrefix(xmlJosnTemlateSrc);
@@ -42,15 +39,11 @@ public class TemplateConvertUtils {
 
 	public static String convertMapByTemplate(String xmlJosnTemlateSrc, String templateFileName,
 			Map<String, Object> data) {
-		return convertMapByTemplate( templateFileName, data, DefaultCharset);
+		return convertMapByTemplate(templateFileName, data, DefaultCharset);
 	}
 
-	
 	public static String convertMapByTemplate(String templateFileName, Map<String, Object> data, String charset) {
-		Locale locale = Locale.getDefault();
-		if (charset == null) {
-			locale = Locale.getDefault();
-		}
+		Locale locale = getLocale(charset);
 		FileTemplateResolver templateResolver = new FileTemplateResolver();
 		// templateResolver.setTemplateMode("XML");
 		// templateResolver.setPrefix(xmlJosnTemlateSrc);
@@ -67,10 +60,7 @@ public class TemplateConvertUtils {
 
 	public static String convertMapByTemplate(String prefix, String suffix, Long cacheTTLMs, String templateCharset,
 			String templateFileName, Map<String, Object> data, String charset, String templateMode) {
-		Locale locale = Locale.getDefault();
-		if (charset == null) {
-			locale = Locale.getDefault();
-		}
+		Locale locale = getLocale(charset);
 		FileTemplateResolver templateResolver = new FileTemplateResolver();
 		templateResolver.setTemplateMode(templateMode);
 		templateResolver.setPrefix(prefix);
@@ -83,5 +73,12 @@ public class TemplateConvertUtils {
 
 		return templateEngine.process(templateFileName, new Context(locale, data));
 
+	}
+
+	public static Locale getLocale(String charset) {
+		if (charset != null) {
+			return new Locale(charset);
+		}
+		return Locale.getDefault();
 	}
 }
