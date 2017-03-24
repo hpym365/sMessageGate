@@ -1,5 +1,6 @@
 package com.senyint.entity;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ public class DataStore extends HashMap<String, Object> {
 	private Map<String, Object> orginData = new HashMap<String, Object>();
 	private Map<String, String> tempStringData = new HashMap<String, String>();
 
+	private Object input;
+
 	public Map<String, String> getTempStringData() {
 		return tempStringData;
 	}
@@ -31,8 +34,6 @@ public class DataStore extends HashMap<String, Object> {
 	private Map<String, Object> tempData = new HashMap<String, Object>();
 
 	private String streamStr;
-
-	private HttpServletRequest request;
 
 	private String requestCommand;
 
@@ -62,12 +63,12 @@ public class DataStore extends HashMap<String, Object> {
 	@SuppressWarnings("rawtypes")
 	public Object getYaml(String key) {
 		String[] pre = key.split("\\.");
-		System.out.println(key);
+		// System.out.println(key);
 		Object temp = yaml;
 		for (int i = 0; i < pre.length; i++) {
 			temp = ((Map) temp).get(pre[i]);
 			if (temp == null)
-				return null;
+				return "";
 		}
 		return temp;
 	}
@@ -171,12 +172,12 @@ public class DataStore extends HashMap<String, Object> {
 		this.resultData = resultData;
 	}
 
-	public HttpServletRequest getRequest() {
-		return request;
+	public Object getInput() {
+		return input;
 	}
 
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
+	public void setInput(Object input) {
+		this.input = input;
 	}
 
 }

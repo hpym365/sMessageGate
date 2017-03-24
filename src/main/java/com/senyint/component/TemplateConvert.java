@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.senyint.util.TemplateConvertUtils;
+
 /**
  * 
- * @author hanpeng
- * 不应该在静态工具类直接读取环境变量
- * 使用component的类调用工具类 传入读取的配置文件变量
+ * @author hanpeng 不应该在静态工具类直接读取环境变量 使用component的类调用工具类 传入读取的配置文件变量
  */
 @Component
 public class TemplateConvert {
@@ -32,7 +31,7 @@ public class TemplateConvert {
 		XML_JSON_TEMPLATE_SRC = src;
 	}
 
-	public static String convertMapByTemplate(String templateFileName, Map<String, Object> data) {
-		return TemplateConvertUtils.convertMapByTemplate(XML_JSON_TEMPLATE_SRC, templateFileName, data);
+	public static String convertMapByTemplate(String templatePathAndFileName, Map<String, Object> data) {
+		return TemplateConvertUtils.convertMapByTemplate(templatePathAndFileName, data);
 	}
 }

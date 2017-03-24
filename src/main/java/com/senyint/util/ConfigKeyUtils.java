@@ -19,8 +19,12 @@ public class ConfigKeyUtils {
 	private static final String HANDLER_CONFIG_WEBSERVICE_NAME_SPACE = ".nameSpace";
 	private static final String HANDLER_CONFIG_WEBSERVICE_METHOD_NAME = ".methodName";
 	private static final String HANDLER_CONFIG_WEBSERVICE_PARAM_NAME = ".paramName";
-	private static final String HANDLER_CONFIG_WEBSERVICE_GEN_WEBSERVICE_DATA_KEY = ".genWebServiceDataKey";
-	private static final String HANDLER_CONFIG_WEBSERVICE_SAVE_WEBSERVICE_DATA_KEY = ".saveWebServiceDataKey";
+	private static final String HANDLER_CONFIG_GET_TEMP_DATA_KEY = ".getTempDataKey";
+	private static final String HANDLER_CONFIG_SAVE_TEMP_DATA_KEY = ".saveTempDataKey";
+
+	private static final String HANDLER_CONFIG_SAVE_ORGIN_DATA_KEY = ".saveOrginDataKey";
+	
+	private static final String HANDLER_CONFIG_ENCODE = ".encode";
 
 	public static String getServiceName(String requestCommand) {
 		return REQUEST_COMMAND_BEFORE + requestCommand + REQUEST_COMMAND_AFTER;
@@ -82,11 +86,19 @@ public class ConfigKeyUtils {
 		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_WEBSERVICE_PARAM_NAME;
 	}
 
-	public static String getHandlerConfigWebServiceGenWebServiceDataKey(String configName) {
-		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_WEBSERVICE_GEN_WEBSERVICE_DATA_KEY;
+	public static String getHandlerConfigGetTempDataKey(String configName) {
+		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_GET_TEMP_DATA_KEY;
 	}
 
-	public static String getHandlerConfigWebServiceSaveWebServiceDataKey(String configName) {
-		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_WEBSERVICE_SAVE_WEBSERVICE_DATA_KEY;
+	public static String getHandlerConfigSaveTempDataKey(String configName) {
+		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_SAVE_TEMP_DATA_KEY;
+	}
+	
+	public static String getHandlerConfigEncode(String configName) {
+		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_ENCODE;
+	}
+	
+	public static String getHandlerConfigSaveOrginDataKey(String configName) {
+		return HANDLER_CONFIG_BEFORE + configName + HANDLER_CONFIG_SAVE_ORGIN_DATA_KEY;
 	}
 }

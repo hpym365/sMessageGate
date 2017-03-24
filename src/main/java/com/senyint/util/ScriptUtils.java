@@ -1,6 +1,5 @@
 package com.senyint.util;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +10,12 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 import org.apache.log4j.Logger;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import com.senyint.log.SenyintLog;
 
 import groovy.lang.Binding;
 import groovy.lang.Script;
@@ -30,7 +30,7 @@ import groovy.util.GroovyScriptEngine;
 public class ScriptUtils {
 
 	Logger logger = Logger.getLogger(this.getClass());
-	
+
 	private String groovyPath;
 	private String javascriptPath;
 
@@ -68,17 +68,10 @@ public class ScriptUtils {
 			Object obj = engine.eval(new FileReader(filepath + filename));
 			Invocable inv = (Invocable) engine;
 			Object res = inv.invokeFunction(funname, params);
-			scriptUtils.logger.debug("执行了脚本文件:"+filepath + filename);
+			scriptUtils.logger.debug("执行了脚本文件:" + filepath + filename);
 			return res;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ScriptException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			SenyintLog.error(e);
 		}
 		// inv.invokeMethod(thiz, name, args)
 		return null;

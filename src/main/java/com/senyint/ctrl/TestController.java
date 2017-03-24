@@ -66,12 +66,15 @@ public class TestController {
 		data.put("today", dateFormat.format(cal.getTime()));
 
 		data.put("today", Calendar.getInstance());
-		TemplateConvert.convertMapByTemplate("person.xml", data);
+		HashMap hashMap = new HashMap();
+		hashMap.put("name", "张三");
+		data.put("result", hashMap);
+		TemplateConvert.convertMapByTemplate("src/main/resources/template/test.xml", data);
 		// String method = "qrsqd";// 流里获取到的传入执行哪个service
 		// 测试 地址http://localhost:8080/query/qxsqd or qrsqd
 		// 见配置application.properties
 
-		return TemplateConvert.convertMapByTemplate("person.xml", data);
+		return TemplateConvert.convertMapByTemplate("src/main/resources/template/test.xml", data);
 	}
 
 }

@@ -34,41 +34,50 @@ public class BaseHandler implements Handler {
 		// instanceof DatabaseHandler
 		// || config.getHandler() instanceof ConvertDataHandler)) {
 
+		String encode = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigEncode(configName));
+		config.setEncode(encode == "" ? "UTF-8" : encode);
 		// 读取配置增删查改? 脚本类型 数据源等
+		if (configName != null) {
+			String scriptType = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigScriptType(configName));
+			String dataSource = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerDataSource(configName));
+			String scriptFile = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigScriptName(configName));
+			String funName = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigFunName(configName));
+			String templateName = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerTemplateName(configName));
 
-		String scriptType = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigScriptType(configName));
-		String dataSource = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerDataSource(configName));
-		String scriptFile = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigScriptName(configName));
-		String funName = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigFunName(configName));
-		String templateName = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerTemplateName(configName));
+			config.setScriptType(scriptType == "" ? "javascript" : scriptType);
+			config.setDataSource(dataSource);
+			config.setScriptFile(scriptFile);
+			config.setFunName(funName);
+			config.setTemplateFileName(templateName);
 
-		config.setScriptType(scriptType == "" ? "javascript" : scriptType);
-		config.setDataSource(dataSource);
-		config.setScriptFile(scriptFile);
-		config.setFunName(funName);
-		config.setTemplateFileName(templateName);
+			JdbcTemplate jdbcTemplate = dds.getJdbcTemplate(config.getDataSource());
 
-		JdbcTemplate jdbcTemplate = dds.getJdbcTemplate(config.getDataSource());
+			config.setJdbcTemplate(jdbcTemplate);
 
-		config.setJdbcTemplate(jdbcTemplate);
+			String url = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceUrl(configName));
+			String nameSpace = (String) dataStore
+					.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceNameSpace(configName));
+			String methodName = (String) dataStore
+					.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceMethodName(configName));
+			String paramName = (String) dataStore
+					.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceParamName(configName));
+			String getTempDataKey = (String) dataStore
+					.getYaml(ConfigKeyUtils.getHandlerConfigGetTempDataKey(configName));
 
-		String url = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceUrl(configName));
-		String nameSpace = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceNameSpace(configName));
-		String methodName = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceParamName(configName));
-		String paramName = (String) dataStore.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceMethodName(configName));
-		String genWebServiceDataKey = (String) dataStore
-				.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceGenWebServiceDataKey(configName));
+			String saveTempDataKey = (String) dataStore
+					.getYaml(ConfigKeyUtils.getHandlerConfigSaveTempDataKey(configName));
 
-		String saveWebServiceDataKey = (String) dataStore
-				.getYaml(ConfigKeyUtils.getHandlerConfigWebServiceSaveWebServiceDataKey(configName));
+			config.setUrl(url);
+			config.setNameSpace(nameSpace);
+			config.setMethodName(methodName);
+			config.setParamName(paramName == "" ? "arg0" : paramName);
+			config.setGetTempDataKey(getTempDataKey);
+			config.setSaveTempDataKey(saveTempDataKey);
 
-		config.setUrl(url);
-		config.setNameSpace(nameSpace);
-		config.setMethodName(methodName);
-		config.setParamName(paramName == "" ? "arg0" : paramName);
-		config.setGenWebServiceDataKey(genWebServiceDataKey);
-		config.setSaveWebServiceDataKey(saveWebServiceDataKey);
-
+			String saveOrginDataKey = (String) dataStore
+					.getYaml(ConfigKeyUtils.getHandlerConfigSaveOrginDataKey(configName));
+			config.setSaveOrginDataKey(saveOrginDataKey == "" ? "default" : saveOrginDataKey);
+		}
 		return config;
 	}
 

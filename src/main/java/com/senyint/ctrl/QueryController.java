@@ -1,5 +1,6 @@
 package com.senyint.ctrl;
 
+import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class QueryController {
 
 	@RequestMapping("{command}")
 	public Object init(ModelMap map, HttpServletRequest request, HttpServletResponse response,
-			@PathVariable("command") String requestCommand) {
+			@PathVariable("command") String requestCommand) throws IOException {
 		// String method = "qrsqd";// 流里获取到的传入执行哪个service
 		// 测试 地址http://localhost:8080/query/qxsqd or qrsqd
 		// 见配置application.properties
@@ -45,7 +46,7 @@ public class QueryController {
 		// ByteArrayInputStream in = this.reciveStream(request);
 
 		DataStore dataStore = new DataStore();
-		dataStore.setRequest(request);
+		dataStore.setInput(request.getInputStream());
 		dataStore.setRequestCommand(requestCommand);
 		Map<String, Object> yaml = null;
 		try {

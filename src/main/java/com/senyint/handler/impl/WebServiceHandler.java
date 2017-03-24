@@ -24,19 +24,20 @@ public class WebServiceHandler extends BaseHandler implements Handler {
 	public void execute(DataStore dataStore) {
 		Config config = this.getConfig(dataStore);// 当前handler的配置
 		Map<String, Object> tempData = dataStore.getTempData();
-		Object[] webServData = (Object[]) tempData.get(config.getGenWebServiceDataKey());
-		Object webserviceRes = null;
+		String webServData = (String) tempData.get(config.getGetTempDataKey());
+		String webserviceRes = null;
 		try {
-			webserviceRes = CallWebServiceUtils.callWebServiceAxis(config.getUrl(), config.getNameSpace(),
-					config.getMethodName(), config.getParamName(), webServData);
+			webserviceRes = (String) CallWebServiceUtils.callWebServiceAxis(config.getUrl(), config.getNameSpace(),
+					config.getMethodName(), config.getParamName(), new Object[] { webServData });
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			SenyintLog.error(e);
 		}
 
-		tempData.put(config.getSaveWebServiceDataKey(), webserviceRes);
+		tempData.put(config.getSaveTempDataKey(), webserviceRes);
 		dataStore.setTempData(tempData);
-		// dataStore.setOutResult(result);
+		dataStore.setOutResult(webserviceRes);
+		dataStore.setInput(webserviceRes);
 		System.out.println("WebServiceHandler execute");
 		// System.out.println(config);
 	}

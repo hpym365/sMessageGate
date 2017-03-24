@@ -5,12 +5,12 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.senyint.component.TemplateConvert;
 import com.senyint.entity.Config;
 import com.senyint.entity.DataStore;
 import com.senyint.handler.BaseHandler;
 import com.senyint.handler.Handler;
 import com.senyint.log.SenyintLog;
+import com.senyint.util.TemplateConvertUtils;
 
 /**
  * @ClassName: GenerateDataHandler
@@ -28,12 +28,15 @@ public class GenerateDataHandler extends BaseHandler implements Handler {
 		res.put("result", dataStore.getResultData());
 		String result = "";
 		try {
-			result = TemplateConvert.convertMapByTemplate(config.getTemplateFileName(), res);
+			result = TemplateConvertUtils.convertMapByTemplate(config.getTemplateFileName(), res);
 		} catch (Exception e) {
 			SenyintLog.error(e);
 		}
 
+		Map<String, Object> tempData = dataStore.getTempData();
+		tempData.put(config.getSaveTempDataKey(), result);
 		dataStore.setOutResult(result);
+		dataStore.setTempData(tempData);
 		System.out.println("GenerateDataHandler execute");
 		// System.out.println(config);
 	}

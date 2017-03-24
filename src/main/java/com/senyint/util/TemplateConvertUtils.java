@@ -19,40 +19,35 @@ public class TemplateConvertUtils {
 
 	private static final String DefaultTemplateCharset = "GBK";
 
-	public static String convertMapByTemplate(String xmlJosnTemlateSrc, String templateFileName,
-			Map<String, Object> data, String charset) {
+	public static String convertMapByTemplate(String templatePath, String templateFileName, Map<String, Object> data,
+			String charset) {
 		FileTemplateResolver templateResolver = new FileTemplateResolver();
-		// templateResolver.setTemplateMode("XML");
-		templateResolver.setPrefix(xmlJosnTemlateSrc);
-		// templateResolver.setSuffix(".xml");
+		templateResolver.setPrefix(templatePath);
 		templateResolver.setCacheTTLMs(3600000L);
 		templateResolver.setCharacterEncoding(DefaultTemplateCharset);
-
 		TemplateEngine templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
-
 		return templateEngine.process(templateFileName, new Context(Locale.getDefault(), data));
-
 	}
 
-	public static String convertMapByTemplate(String xmlJosnTemlateSrc, String templateFileName,
-			Map<String, Object> data) {
-		return convertMapByTemplate(templateFileName, data);
-	}
-
-	public static String convertMapByTemplate(String templateFileName, Map<String, Object> data) {
+	public static String convertMapByTemplate(String templatePathAndFileName, Map<String, Object> data) {
 		FileTemplateResolver templateResolver = new FileTemplateResolver();
-		// templateResolver.setTemplateMode("XML");
-		// templateResolver.setPrefix(xmlJosnTemlateSrc);
-		// templateResolver.setSuffix(".xml");
 		templateResolver.setCacheTTLMs(3600000L);
 		templateResolver.setCharacterEncoding(DefaultTemplateCharset);
-
 		TemplateEngine templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
+		return templateEngine.process(templatePathAndFileName, new Context(Locale.getDefault(), data));
+	}
 
-		return templateEngine.process(templateFileName, new Context(Locale.getDefault(), data));
-
+	public static String convertMapByTemplate(String templatePathAndFileName, Map<String, Object> data, Locale locale) {
+		if (locale == null)
+			locale = Locale.getDefault();
+		FileTemplateResolver templateResolver = new FileTemplateResolver();
+		templateResolver.setCacheTTLMs(3600000L);
+		templateResolver.setCharacterEncoding(DefaultTemplateCharset);
+		TemplateEngine templateEngine = new TemplateEngine();
+		templateEngine.setTemplateResolver(templateResolver);
+		return templateEngine.process(templatePathAndFileName, new Context(locale, data));
 	}
 
 	public static String convertMapByTemplate(String prefix, String suffix, Long cacheTTLMs, String templateCharset,
@@ -63,12 +58,9 @@ public class TemplateConvertUtils {
 		templateResolver.setSuffix(suffix);
 		templateResolver.setCacheTTLMs(cacheTTLMs);
 		templateResolver.setCharacterEncoding(templateCharset);
-
 		TemplateEngine templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
-
 		return templateEngine.process(templateFileName, new Context(Locale.getDefault(), data));
-
 	}
 
 }

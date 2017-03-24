@@ -28,15 +28,42 @@ public class Config {
 	private String nameSpace;
 	private String methodName;
 	private String paramName;
-	private String genWebServiceDataKey;
-	private String saveWebServiceDataKey;
+	private String getTempDataKey;
+	private String saveTempDataKey;
+	private String encode;
 
-	public String getSaveWebServiceDataKey() {
-		return saveWebServiceDataKey;
+	private String saveOrginDataKey;
+
+	public String getSaveOrginDataKey() {
+		return saveOrginDataKey;
 	}
 
-	public void setSaveWebServiceDataKey(String saveWebServiceDataKey) {
-		this.saveWebServiceDataKey = saveWebServiceDataKey;
+	public void setSaveOrginDataKey(String saveOrginDataKey) {
+		this.saveOrginDataKey = saveOrginDataKey;
+	}
+
+	public String getEncode() {
+		return encode;
+	}
+
+	public void setEncode(String encode) {
+		this.encode = encode;
+	}
+
+	public String getGetTempDataKey() {
+		return getTempDataKey;
+	}
+
+	public void setGetTempDataKey(String getTempDataKey) {
+		this.getTempDataKey = getTempDataKey;
+	}
+
+	public String getSaveTempDataKey() {
+		return saveTempDataKey;
+	}
+
+	public void setSaveTempDataKey(String saveTempDataKey) {
+		this.saveTempDataKey = saveTempDataKey;
 	}
 
 	public String getParamName() {
@@ -69,14 +96,6 @@ public class Config {
 
 	public void setMethodName(String methodName) {
 		this.methodName = methodName;
-	}
-
-	public String getGenWebServiceDataKey() {
-		return genWebServiceDataKey;
-	}
-
-	public void setGenWebServiceDataKey(String genWebServiceDataKey) {
-		this.genWebServiceDataKey = genWebServiceDataKey;
 	}
 
 	public String getTemplateFileName() {

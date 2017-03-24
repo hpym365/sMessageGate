@@ -1,8 +1,7 @@
 <person>
-	<student th:each="person : ${result}" >
-		<name th:text="${person.name}"></name>
-		<age th:text="${person.age}"></age>
-		<devname th:text="${person.devname}"></devname>
-		<xeguid th:text="${person.xeguid}"></xeguid>
-	</student>
+	<name th:text="${name}"></name>
+	<age th:text="${age}"></age>
+	<cc th:text="${accc}"></cc>
+	<b>123</b>
+	<b>456</b>
 </person>

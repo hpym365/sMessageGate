@@ -6,7 +6,9 @@ function test(orgin,tempdata,resultdata){
 	for(var i=0;i<studentlist.length;i++){
 		var map = {};
 		map.key="studyinfo";
-		map.sql="select * from studyinfo where studyid='"+studentlist[i].get("STUID")+"'";
+		map.sql="select * from studyinfo where studyid=?";
+		param = [studentlist[i].get("STUID")]
+		map.param=param;
 		arr[i]=map;
 	}
 //	data.DiagID

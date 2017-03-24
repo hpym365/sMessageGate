@@ -18,7 +18,7 @@ public class MyServiceImpl implements IMyService {
 	public String sayHello(String says) {
 		// TODO Auto-generated method stub
 		System.out.println("接收到的信息为:" + says);
-		return "服务端返回信息:" + says;
+		return says;
 	}
 
 }

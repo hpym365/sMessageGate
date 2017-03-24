@@ -1,5 +1,5 @@
 function test(map){
-	var data = map;
+	var data = map.get("pacs");
 	var list = data.Testlist;
 	var arr = [];
 	for(var i=0;i<list.test.length;i++){
