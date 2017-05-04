@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -78,13 +79,16 @@ public class ReciveStreamHandler extends BaseHandler implements Handler {
 	}
 
 	public String getStreamType(DataStore dataStore) {
-		switch (dataStore.getStreamStr().substring(0, 1)) {
-		case "<":
-			return "XML";
-		case "{":
-			return "JSON";
-		default:
-			return "";
+		if (StringUtils.isNotEmpty(dataStore.getStreamStr())) {
+			switch (dataStore.getStreamStr().substring(0, 1)) {
+			case "<":
+				return "XML";
+			case "{":
+				return "JSON";
+			default:
+				return "";
+			}
 		}
+		return "";
 	}
 }

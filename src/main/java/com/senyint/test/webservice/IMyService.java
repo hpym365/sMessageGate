@@ -15,4 +15,7 @@ public interface IMyService {
 
 	@WebMethod
 	public String sayHello(String says);
+	
+	@WebMethod
+	public String sayHello2(String says);
 }

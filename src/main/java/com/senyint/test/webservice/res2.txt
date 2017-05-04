@@ -1,0 +1,39 @@
+<Request>
+    <ResultCode>0</ResultCode>
+    <ResultContent>发送成功</ResultContent>
+     <PatInfos>
+          <PatInfo>
+               <RegNo>001</RegNo>
+               <DocumentID>01</DocumentID>
+               <PatName>张三</PatName >
+               <Age>18</Age>
+               <Sex>男</Sex>
+               <CardID>12301234</CardID>
+               <Telephone>13390908888</Telephone>
+               <Address>辽宁</Address>
+               <Nation>中国</Nation>
+          </PatInfo>
+          <PatInfo>
+               <RegNo>002</RegNo>
+               <DocumentID>02</DocumentID>
+               <PatName>赵四</PatName >
+               <Age>22</Age>
+               <Sex>女</Sex>
+               <CardID>12301234</CardID>
+               <Telephone>13390908888</Telephone>
+               <Address>黑龙江</Address>
+               <Nation>中国</Nation>
+          </PatInfo>
+          <PatInfo>
+               <RegNo>003</RegNo>
+               <DocumentID>03</DocumentID>
+               <PatName>王五</PatName >
+               <Age>45</Age>
+               <Sex>男</Sex>
+               <CardID>112301234</CardID>
+               <Telephone>13390908888</Telephone>
+               <Address>吉林</Address>
+               <Nation>中国</Nation>
+          </PatInfo>
+     </PatInfos>
+</Request>

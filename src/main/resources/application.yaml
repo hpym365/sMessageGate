@@ -11,12 +11,12 @@ script:
   javascriptPath: javascript\\
 datasource:
   testa:
-    url: jdbc:oracle:thin:@59.44.27.126:1521:orcl
+    url: jdbc:oracle:thin:@172.16.161.52:1521:orcl
     driver: oracle.jdbc.driver.OracleDriver
     username: test
     password: test
   testc:
-    url: jdbc:oracle:thin:@59.44.27.126:1521:orcl
+    url: jdbc:oracle:thin:@172.16.161.52:1521:orcl
     driver: oracle.jdbc.driver.OracleDriver
     username: nmis
     password: nmis
@@ -66,7 +66,7 @@ handlerConfig:
   datatomap:
     saveOrginDataKey: pacs
   webserviceconf: 
-    url: http://localhost:8080/soap/hello?wsdl
+    url: http://localhost:8888/soap/hello?wsdl
     nameSpace: http://webservice.test.senyint.com/
     methodName: sayHello
     getTempDataKey: webserv1
